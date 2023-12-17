@@ -1,6 +1,6 @@
 #include "./types.h"
 
-class GameViewer{
+class Renderer{
     public:
     void printBoard(BoardArray board);
 };

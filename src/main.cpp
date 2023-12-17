@@ -2,14 +2,14 @@
 #include <stdlib.h>
 #include "Player/bot.h"
 #include "Game/game.h"
-#include "GameViewer/gameviewer.h"
+#include "Renderer/renderer.h"
 
 int main(){
     Bot player_one;
     Bot player_two;
     GameState state;
     Game game(player_one, player_two);
-    GameViewer interface;
+    Renderer interface;
     while((state = game.nextMove()) == ONGOING){
         interface.printBoard(game.getBoardState());
     }

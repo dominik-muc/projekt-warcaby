@@ -1,7 +1,7 @@
 #pragma once
 
 #include <ncurses.h>
-#include "../Renderer/renderer.h"
+#include <Warcaby/Renderer/renderer.h>
 
 
 

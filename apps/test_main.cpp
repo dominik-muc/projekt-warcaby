@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <ncurses.h>
-#include "TextRenderer/textrenderer.hpp"
+#include <Warcaby/TextRenderer/textrenderer.hpp>
 
 
 int main(){

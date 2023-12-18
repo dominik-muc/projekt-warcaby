@@ -1,6 +1,6 @@
 #pragma once
 
-#include "player.h"
+#include "Warcaby/Player/player.h"
 
 class Bot : public Player{
     public:

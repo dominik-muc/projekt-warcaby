@@ -10,3 +10,12 @@ Autorzy projektu:
 - Rafał Pęcherz
 - Stanisław Burdzicki
 - Nadia Uczkiewicz
+
+<br />
+<br />
+
+# Instrukcje Budowania
+Wymagana jest biblioteka ncurses, do pobrania np. w następujący sposób
+```sh
+apt-get install libncurses-dev
+```

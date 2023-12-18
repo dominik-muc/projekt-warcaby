@@ -1,3 +1,5 @@
+#pragma once
+
 enum GameState{
     BLACK_WIN,
     WHITE_WIN,
@@ -6,8 +8,8 @@ enum GameState{
 };
 
 enum Symbol{
-    BLACK,
-    WHITE
+    SYMBOL_BLACK,
+    SYMBOL_WHITE
 };
 
 enum FieldType{

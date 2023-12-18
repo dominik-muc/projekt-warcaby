@@ -1,5 +1,7 @@
-#include "./Board/board.h"
-#include "./Player/player.h"
+#pragma once
+
+#include "../Board/board.h"
+#include "../Player/player.h"
 
 /*
 Tylko funkcja Game ma mieć bezpośredni dostęp do klasy Board, inne funkcje

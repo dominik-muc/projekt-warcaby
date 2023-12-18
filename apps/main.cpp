@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "Player/bot.h"
-#include "Game/game.h"
-#include "Renderer/renderer.h"
+#include "Warcaby/Player/bot.h"
+#include "Warcaby/Game/game.h"
+#include "Warcaby/Renderer/renderer.h"
 
 int main(){
     Bot player_one;

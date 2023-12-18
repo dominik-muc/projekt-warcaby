@@ -14,9 +14,11 @@ int main(){
 
     for(int i=0; i<8; i++){
         for(int j=0; j<8; j++){
-            board.field[i][j] = 1;
+            board.field[i][j] = 0;
         }
     }
+
+    board.field[7][7] = 3;
 
     int renderer_type = 1; //1 for ascii renderer
     nanosleep(&sleep_time, NULL);
@@ -26,6 +28,8 @@ int main(){
 
     nanosleep(&sleep_time, NULL);
     interface.printBoard(board);
+
+    nanosleep(&sleep_time, NULL);
 
     // closes ncurses window if using ascii renderer
     if(renderer_type == 1){

@@ -1,5 +1,4 @@
-#include "./textrenderer.hpp"
-
+#include <Warcaby/TextRenderer/textrenderer.hpp>
 
 AsciiRenderer::AsciiRenderer() 
 {
@@ -17,5 +16,6 @@ void AsciiRenderer::printBoard(BoardArray board)
         }
         
         printw("\n");
+        refresh();
     }
 }

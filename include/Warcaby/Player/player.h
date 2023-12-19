@@ -3,6 +3,5 @@
 #include "Warcaby/types.h"
 
 class Player{
-    public:
-    virtual Move getMove() = 0;
+ // narazie olewam to, ale w przyszlosci bedzie to klasa bazowa dla PlayerHuman i PlayerAI
 };

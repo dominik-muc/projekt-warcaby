@@ -3,16 +3,25 @@
 #include "Warcaby/Board/board.h"
 #include "Warcaby/Player/player.h"
 
-/*
-Tylko funkcja Game ma mieć bezpośredni dostęp do klasy Board, inne funkcje
-dostają tylko tablicę intów.
-*/
+
 class Game{
     public:
-    //Player jest abstrakcyjny więc prawdopodobnie trzeba to jakoś castować idk
-    Game(Player player_one, Player player_two);
-    GameState nextMove();
-    BoardArray getBoardState();
+    // konstruktor
+    Game();
+
+    // aktualny stan gry
+    GameState gameState;
+
+    // akutalny ruch
+    Symbol currentMove;
+
+    // aktualizacja gry, funkcja ta bedzeie sprawdzac czy jest poprawny ruch, jak tak to wywola board.update, jak nie to nie i poprosci jeszcze raz o ruch
+    void update();
+    
+    // funkcja renderujaca, bedzie wywolywana po kazdym update, narazie bedzie wypisywac plansze do cout czy cos
+    void render();
+    
+    
     private:
     Board board;
 };

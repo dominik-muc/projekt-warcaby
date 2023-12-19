@@ -1,8 +1,9 @@
-#pragma once
+// #pragma once
 
-#include "Warcaby/types.h"
+// #include "Warcaby/types.h"
 
-class Renderer{
-    public:
-    void printBoard(BoardArray board);
-};
+//pocotenrenderer?
+// class Renderer{
+//     public:
+//     void printBoard(BoardArray board);
+// };

@@ -1,4 +1,5 @@
 #pragma once
+#include <array>
 
 enum GameState{
     BLACK_WIN,
@@ -28,5 +29,5 @@ struct Move{
 };
 
 struct BoardArray{
-    int field[8][8];
+    std::array<std::array<int, 8>, 8> board;
 };

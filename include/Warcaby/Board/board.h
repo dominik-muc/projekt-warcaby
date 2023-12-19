@@ -11,8 +11,10 @@ class Board{
     void setField(int x, int y, FieldType type);
 
     // getBoard zwraca aktualny stan planszy (plansza jest prywatna, wiec nie mozna jej zobaaczyc z zewnatrz)
-    BoardArray getBoard();
+    
+    std::array<std::array<int, 8>, 8> getBoard();
 
     private:    
+    // 0 = puste pole, 1 = bialy pionek, 2 = czarny pionek, 3 = biala damka, 4 = czarna damka
     std::array<std::array<int, 8>, 8> board; 
 };

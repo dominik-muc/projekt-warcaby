@@ -28,6 +28,6 @@ struct Move{
     int colum2;
 };
 
-struct BoardArray{
-    std::array<std::array<int, 8>, 8> board;
-};
+// struct BoardArray{
+//     std::array<std::array<int, 8>, 8> board;
+// };

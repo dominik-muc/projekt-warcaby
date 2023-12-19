@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Warcaby/Board/board.h"
-#include "Warcaby/Player/player.h"
+#include <Warcaby/Board/board.h>
+#include <Warcaby/Player/player.h>
 
 /*
 Tylko funkcja Game ma mieć bezpośredni dostęp do klasy Board, inne funkcje

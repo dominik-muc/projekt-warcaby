@@ -1,8 +1,8 @@
-/*#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
-#include "Warcaby/Player/bot.h"
-#include "Warcaby/Game/game.h"
-#include "Warcaby/Renderer/renderer.h"
+#include <Warcaby/Player/bot.h>
+#include <Warcaby/Game/game.h>
+#include <Warcaby/Renderer/renderer.h>
 
 int main(){
     Bot player_one;
@@ -26,4 +26,3 @@ int main(){
     }
     return 0;
 }
-*/

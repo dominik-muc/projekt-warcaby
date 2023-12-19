@@ -1,4 +1,6 @@
-#include "./types.h"
+#pragma once
+
+#include "Warcaby/types.h"
 
 class Player{
     public:

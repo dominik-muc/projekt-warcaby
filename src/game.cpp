@@ -7,8 +7,8 @@ Game::Game(){
     // ustawiamy aktualny stan gry na ONGOING
     gameState = ONGOING;
 
-    // ustawiamy aktualny ruch na BLACK
-    currentMove = SYMBOL_BLACK;
+    // ustawiamy aktualny ruch na WHITE
+    currentMove = SYMBOL_WHITE;
 
     // tworzymy plansze
     board = Board();

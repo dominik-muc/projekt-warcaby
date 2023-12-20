@@ -6,6 +6,8 @@ target_link_libraries(main PRIVATE
     ${CURSES_LIBRARIES}
     )
 
+
+
 add_executable(test_main test_main.cpp)
 target_compile_features(test_main PRIVATE cxx_std_20)
 

@@ -48,3 +48,12 @@ target_link_libraries(test_main PRIVATE
 spowoduje powstanie przy budowaniu nowego pliku wykonywalnego `test_main` skompilowanego z pliku `test_main.cpp`
 
 Jak uruchomicie `cmake --build ./build` to w `./build/apps` pojawi się kilka programów - każdy odpowiadający jednemu plikowi z funkcją `main`
+
+
+<br />
+<br />
+<br />
+<br />
+
+
+CMake może wam narzekać jeżeli folder `./src`  jest pusty

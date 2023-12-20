@@ -54,3 +54,7 @@ ja moge robic jakis refactor przy mergowaniu, moze ze ktos sie lepiej na tym zna
 
 # Pytania
 jak macie pytania to issue albo grupa na mess
+
+
+# Trello:
+https://trello.com/b/1WFJDWvP/pwi-warcaby

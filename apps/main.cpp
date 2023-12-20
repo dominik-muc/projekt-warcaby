@@ -1,29 +1,26 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "Warcaby/Player/bot.h"
+#include <iostream>
 #include "Warcaby/Game/game.h"
-#include "Warcaby/Renderer/renderer.h"
+#include "Warcaby/types.h"
 
-int main(){
-    /* Bot player_one;
-    Bot player_two;
-    GameState state;
-    Game game(player_one, player_two);
-    Renderer interface;
-    while((state = game.nextMove()) == ONGOING){
-        interface.printBoard(game.getBoardState());
+using namespace std;
+
+int main() {
+    
+    // tworzymy obiekt gry
+    Game game;
+
+    // glowna petla gry
+    while(game.gameState == ONGOING){
+        cout << "Ruch gracza: " << game.currentMove << endl;
+        cout << "Podaj ruch: " << endl;
+        game.update();
+        game.render();
+        game.gameState = BLACK_WIN;
     }
 
-    switch(state){
-        case BLACK_WIN:
-            break;
-        case WHITE_WIN:
-            break;
-        case WRONG_MOVE:
-            break;
-        default:
-            return 0xFF; //unexpected error
-    } */
-    printf("Hello, world!");
+    // wypisujemy kto wygral
+
+    cout << "Wygral gracz: " << game.gameState << endl;
+    
     return 0;
 }

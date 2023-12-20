@@ -8,10 +8,9 @@ class Board{
     public:
     Board();
     // setField bedzie aktualizowal plansze, czyli zmienial wartosc w array (gdy juz sie upewnimy ze ruch jest poprawny)
-    void setField(int x, int y, FieldType type);
+    void setField(int x, int y, int type);
 
-    // getBoard zwraca aktualny stan planszy (plansza jest prywatna, wiec nie mozna jej zobaaczyc z zewnatrz)
-    
+    // getBoard zwraca aktualny stan planszy (plansza jest prywatna, wiec nie mozna jej zobaaczyc z zewnatrz)    
     std::array<std::array<int, 8>, 8> getBoard();
 
     private:    

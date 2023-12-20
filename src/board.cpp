@@ -19,3 +19,8 @@ Board::Board(){
 std::array<std::array<int, 8>, 8> Board::getBoard() {
     return board;
 }
+
+void Board::setField(int x, int y, int type) {
+    // type: 0 = puste pole, 1 = bialy pionek, 2 = czarny pionek, 3 = biala damka, 4 = czarna damka
+    board[x][y] = type;
+}

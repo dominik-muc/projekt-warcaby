@@ -5,7 +5,7 @@
 #include "Warcaby/Renderer/renderer.h"
 
 int main(){
-    Bot player_one;
+    /* Bot player_one;
     Bot player_two;
     GameState state;
     Game game(player_one, player_two);
@@ -23,6 +23,7 @@ int main(){
             break;
         default:
             return 0xFF; //unexpected error
-    }
+    } */
+    printf("Hello, world!");
     return 0;
 }

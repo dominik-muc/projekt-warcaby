@@ -6,7 +6,7 @@
 
 
 int main(){
-    AsciiRenderer interface;
+    /* AsciiRenderer interface;
     
     static const struct timespec sleep_time = {.tv_sec = 2, .tv_nsec = 30000000};
 
@@ -30,6 +30,7 @@ int main(){
     // closes ncurses window if using ascii renderer
     if(renderer_type == 1){
         endwin();
-    }
+    } */
+    printf("Hello, world!");
     return 0;
 }

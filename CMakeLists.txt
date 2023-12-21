@@ -8,8 +8,9 @@ project(
     DESCRIPTION "Warcaby w C++. Wow")
 
 
-find_package(Curses REQUIRED)
-include_directories(${CURSES_INCLUDE_DIR})
+#narazie to komentuje -> musimy zrobić to zależnie od platformy, bo z tego co Wojtek mówił nie ma ncurses na windowsa i nie chce się projekt zbudować.
+#find_package(Curses REQUIRED)
+#include_directories(${CURSES_INCLUDE_DIR})
     
 
 add_subdirectory(apps)

@@ -39,6 +39,13 @@ void Game::update() {
     int row1, colum1, row2, colum2;
     cin >> row1 >> colum1 >> row2 >> colum2;
     cout << "Ruch gracza: " << row1 << " " << colum1 << " " << row2 << " " << colum2 << endl;
+
+    // na samym poczatku sprawdzamy czy ruch jest na planszy
+
+    if (!(row1 >= 0 && row1 < 8 && colum1 >= 0 && colum1 < 8 && row2 >= 0 && row2 < 8 && colum2 >= 0 && colum2 < 8)) {
+        cout << "Ruch poza planszą" << endl;
+        // prosimy o podanie ruchu jeszcze raz
+    }
     
     // sprawdzamy czy na wybranym polu jest pionek gracza ktory ma aktualnie ruch
     if (currentMove == SYMBOL_WHITE) {

@@ -13,9 +13,19 @@
 
 ## Linux
 1) Sprawdź czy masz zainstalowanego CMake komendą `cmake --help`
-    - Jeżeli nie - zainstaluj apt-get --install cmake
+    - Jeżeli nie - zainstaluj `apt-get --install cmake`
 2) Jeżeli korzystasz z IDE (Visual studio code, Visual studio, Clion etc.) to ma na 99% wbudowaną obsługę cmake, dowiedz się jak korzystać z tego, bo jest lepiej
 3) Jeżeli nie to znajdując się w folderze /projekt-warcaby wykonaj komendę `cmake --build ./build`
+4) Gratulacje Twój plik wykonywalny znajduje się w folderze `./build/apps/<nazwa pliku>`
+
+<br />
+<br />
+
+## macOS
+1) Sprawdź czy masz zainstalowanego CMake komendą `cmake --help`
+    - Jeżeli nie - zainstaluj komendą: `brew install cmake` (Uwaga! Musisz mieć zainstalowany homebrew)
+2) Jeżeli korzystasz z IDE (Visual studio code, Visual studio, Clion etc.) to ma na 99% wbudowaną obsługę cmake, dowiedz się jak korzystać z tego, bo jest lepiej
+3) Jeżeli nie to znajdując się w folderze /projekt-warcaby wykonaj komendę `cmake -S . -B build`, następnie `make -C build`
 4) Gratulacje Twój plik wykonywalny znajduje się w folderze `./build/apps/<nazwa pliku>`
 
 <br />

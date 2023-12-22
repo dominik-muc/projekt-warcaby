@@ -11,15 +11,13 @@ int main() {
 
     // glowna petla gry
     while(game.gameState == ONGOING){
+        game.render();
         cout << "Ruch gracza: " << game.currentMove << endl;
         cout << "Podaj ruch: " << endl;
-        game.update();
-        game.render();
-        game.gameState = BLACK_WIN;
+        game.update();        
     }
 
     // wypisujemy kto wygral
-
     cout << "Wygral gracz: " << game.gameState << endl;
     
     return 0;

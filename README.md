@@ -17,6 +17,7 @@ W głównym katalogu wykonaj polecenie `./build_windows.bat`.
 
 ### MacOS
 ~~https://wiki.archlinux.org/title/installation_guide~~
+W głownym katalogu wykonaj polecenie `cmake -S . -B build`, następnie `make -C build`
 
 ## Uruchamianie aplikacji
 Zbudowana aplikacja znajduje się w katalogu build/apps.  

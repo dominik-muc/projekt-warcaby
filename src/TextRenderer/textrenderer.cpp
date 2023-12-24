@@ -30,5 +30,9 @@ void AsciiRenderer::closeRenderer()
 std::array<int, 4> AsciiRenderer::getUserInput()
 {
     std::array<int, 4> a = {1,1,1,1};
+
+    printw("\n");
+    printw("Podaj ruch:\n");
+    refresh();
     return a;
 }

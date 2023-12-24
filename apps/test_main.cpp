@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <ncurses.h>
 #include <Warcaby/TextRenderer/textrenderer.hpp>
 
 
@@ -20,20 +19,16 @@ int main(){
 
     board.field[7][7] = 3;
 
-    int renderer_type = 1; //1 for ascii renderer
     nanosleep(&sleep_time, NULL);
     interface.printBoard(board);
 
-    board.field[4][4] = 1;
+    board.field[5][2] = 1;
 
     nanosleep(&sleep_time, NULL);
     interface.printBoard(board);
 
     nanosleep(&sleep_time, NULL);
 
-    // closes ncurses window if using ascii renderer
-    if(renderer_type == 1){
-        endwin();
-    }
+    interface.closeRenderer();
     return 0;
 }

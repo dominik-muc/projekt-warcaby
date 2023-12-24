@@ -1,7 +1,14 @@
 #pragma once
 
-#include <ncurses.h>
+#ifdef _WIN32
+    #include <pdcurses.h>
+#else
+    #include <ncurses.h>
+#endif
+
+
 #include <Warcaby/Renderer/renderer.h>
+#include <array>
 
 
 
@@ -10,7 +17,10 @@ class AsciiRenderer : Renderer{
     public:
         AsciiRenderer();
         void printBoard(BoardArray board);
+        void closeRenderer();
+        void getUserInput();
 
     private:
-        const char* piece_art[5] = {"_", "o", "O", "x", "X"}; 
+        // acording to FieldType from types.h
+        const char* piece_art[5] = {"_", "o", "O", "x", "X"};
 };

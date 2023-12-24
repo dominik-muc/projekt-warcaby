@@ -1,4 +1,5 @@
 #include "Warcaby/TextRenderer/textrenderer.hpp"
+#include <ncurses.h>
 
 AsciiRenderer::AsciiRenderer() 
 {
@@ -26,7 +27,8 @@ void AsciiRenderer::closeRenderer()
     endwin();
 }
 
-int* AsciiRenderer::getUserInput()
+std::array<int, 4> AsciiRenderer::getUserInput()
 {
-    
+    std::array<int, 4> a = {1,1,1,1};
+    return a;
 }

@@ -20,6 +20,9 @@ class Game{
     
     // funkcja renderujaca, bedzie wywolywana po kazdym update, narazie bedzie wypisywac plansze do cout czy cos
     void render();
+
+    // odkrywa board.getBoard dla innych rendererów
+    std::array<std::array<int, 8>, 8> getBoard();
     
     
     private:

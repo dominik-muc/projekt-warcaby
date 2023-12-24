@@ -1,34 +1,29 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <Warcaby/TextRenderer/textrenderer.hpp>
+#include <iostream>
+#include "Warcaby/Game/game.h"
+#include "Warcaby/types.h"
 
+#include "Warcaby/TextRenderer/textrenderer.hpp"
 
-int main(){
-    AsciiRenderer interface;
+using namespace std;
+
+int main() {
     
-    static const struct timespec sleep_time = {.tv_sec = 2, .tv_nsec = 30000000};
+    // tworzymy obiekt gry
+    Game game;
+    AsciiRenderer renderer;
 
-    struct BoardArray board;
-
-    for(int i=0; i<8; i++){
-        for(int j=0; j<8; j++){
-            board.field[i][j] = 0;
-        }
+    // glowna petla gry
+    while(game.gameState == ONGOING){
+        //game.render();
+        renderer.printBoard(game.getBoard());
+        
+        cout << "Ruch gracza: " << game.currentMove << endl;
+        cout << "Podaj ruch: " << endl;
+        game.update();        
     }
 
-    board.field[7][7] = 3;
-
-    nanosleep(&sleep_time, NULL);
-    interface.printBoard(board);
-
-    board.field[5][2] = 1;
-
-    nanosleep(&sleep_time, NULL);
-    interface.printBoard(board);
-
-    nanosleep(&sleep_time, NULL);
-
-    interface.closeRenderer();
+    // wypisujemy kto wygral
+    cout << "Wygral gracz: " << game.gameState << endl;
+    
     return 0;
 }

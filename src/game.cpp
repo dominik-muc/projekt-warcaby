@@ -87,3 +87,7 @@ void Game::update() {
     
 
 }
+
+std::array<std::array<int, 8>, 8> Game::getBoard(){
+    return board.getBoard();
+}

@@ -7,5 +7,5 @@ class Renderer{
     public:
     void printBoard(std::array<std::array<int, 8>, 8> board );
     void closeRenderer();
-    int* getUserInput();
+    std::array<int, 4> getUserInput();
 };

@@ -2,16 +2,21 @@
 #include "Warcaby/Game/game.h"
 #include "Warcaby/types.h"
 
+#include "Warcaby/TextRenderer/textrenderer.hpp"
+
 using namespace std;
 
 int main() {
     
     // tworzymy obiekt gry
     Game game;
+    AsciiRenderer renderer;
 
     // glowna petla gry
     while(game.gameState == ONGOING){
-        game.render();
+        //game.render();
+        renderer.printBoard(game.board.getBoard());
+        
         cout << "Ruch gracza: " << game.currentMove << endl;
         cout << "Podaj ruch: " << endl;
         game.update();        

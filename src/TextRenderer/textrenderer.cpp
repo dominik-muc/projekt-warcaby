@@ -1,4 +1,4 @@
-#include <Warcaby/TextRenderer/textrenderer.hpp>
+#include "Warcaby/TextRenderer/textrenderer.hpp"
 
 AsciiRenderer::AsciiRenderer() 
 {
@@ -8,12 +8,12 @@ AsciiRenderer::AsciiRenderer()
     refresh();
 }
 
-void AsciiRenderer::printBoard(BoardArray board)
+void AsciiRenderer::printBoard( std::array<std::array<int, 8>, 8> board )
 {
     erase();
     for(int i=0; i<8; i++){
         for(int j=0; j<8; j++){
-            printw("%s", piece_art[ board.field[i][j] ]);
+            printw("%s ", piece_art[ board[i][j] ]);
         }
         
         printw("\n");
@@ -26,7 +26,7 @@ void AsciiRenderer::closeRenderer()
     endwin();
 }
 
-void AsciiRenderer::getUserInput()
+int* AsciiRenderer::getUserInput()
 {
     
 }

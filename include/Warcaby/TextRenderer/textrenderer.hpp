@@ -16,9 +16,9 @@
 class AsciiRenderer : Renderer{
     public:
         AsciiRenderer();
-        void printBoard(BoardArray board);
+        void printBoard(std::array<std::array<int, 8>, 8> board );
         void closeRenderer();
-        void getUserInput();
+        int* getUserInput();
 
     private:
         // acording to FieldType from types.h

@@ -12,18 +12,25 @@ int main() {
     Game game;
     AsciiRenderer renderer;
 
+    array<int, 2> UserInput;
+
     // glowna petla gry
     while(game.gameState == ONGOING){
         //game.render();
         renderer.printBoard(game.getBoard());
         
-        cout << "Ruch gracza: " << game.currentMove << endl;
-        cout << "Podaj ruch: " << endl;
-        game.update();        
+        //cout << "Ruch gracza: " << game.currentMove << endl;
+        //cout << "Podaj ruch: " << endl;
+        UserInput = renderer.getUserInput();
+        UserInput = renderer.getUserInput();
+        UserInput = renderer.getUserInput();
+        game.update();
+        renderer.printMessage("Example message");
+
     }
 
     // wypisujemy kto wygral
-    cout << "Wygral gracz: " << game.gameState << endl;
+    //cout << "Wygral gracz: " << game.gameState << endl;
     
     return 0;
 }

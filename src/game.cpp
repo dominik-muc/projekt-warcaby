@@ -37,7 +37,13 @@ void Game::update() {
     // pobieramy ruch od gracza
     // row1, colum1, row2, colum2 to zmienne typu int odpowiadajce kolejno za wiersz i kolumne pola z ktorego chcemy sie ruszyc i wiersz i kolumne pola na ktore chcemy sie ruszyc
     int row1, colum1, row2, colum2;
-    cin >> row1 >> colum1 >> row2 >> colum2;
+
+    row1 = 1;
+    colum1 = 1;
+    row2 = 1;
+    colum2 = 1;
+    //cin >> row1 >> colum1 >> row2 >> colum2;
+    
     cout << "Ruch gracza: " << row1 << " " << colum1 << " " << row2 << " " << colum2 << endl;
 
     // na samym poczatku sprawdzamy czy ruch jest na planszy

@@ -12,11 +12,9 @@ W ramach projektu na zajęcia PWI przygotowaliśmy prostą grę w warcaby.
 W głównym katalogu wykonaj polecenie `./build_linux.sh`.
 
 ### Windows
-~~https://wiki.archlinux.org/title/installation_guide~~  
 W głównym katalogu wykonaj polecenie `./build_windows.bat`.
 
 ### MacOS
-~~https://wiki.archlinux.org/title/installation_guide~~
 W głownym katalogu wykonaj polecenie `cmake -S . -B build`, następnie `make -C build`
 
 ## Uruchamianie aplikacji

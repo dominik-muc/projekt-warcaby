@@ -2,6 +2,7 @@
 
 #include <Warcaby/Board/board.h>
 #include <Warcaby/Player/player.h>
+#include <string>
 
 class Game
 {
@@ -16,7 +17,7 @@ public:
     Symbol currentMove;
 
     // aktualizacja gry, bedzie wywolywana po kazdym ruchu
-    void update();
+    std::string update(int xp, int yp, int xk, int yk);
 
     // funkcja renderujaca, bedzie wywolywana po kazdym update, narazie bedzie wypisywac plansze do cout czy cos
     void render();

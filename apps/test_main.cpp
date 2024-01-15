@@ -12,20 +12,22 @@ int main() {
     Game game;
     AsciiRenderer renderer;
 
-    array<int, 2> UserInput;
+    array<int, 2> UserInput1, UserInput2;
+    string player;
+    string mess = "";
 
     // glowna petla gry
     while(game.gameState == ONGOING){
-        //game.render();
+
         renderer.printBoard(game.getBoard());
+        player = game.currentMove == SYMBOL_WHITE ? "Bialy" : "Czarny";
+        renderer.printMessage(mess + "\n\nRuch gracza: " + player + "\nPodaj ruch");
         
-        //cout << "Ruch gracza: " << game.currentMove << endl;
-        //cout << "Podaj ruch: " << endl;
-        UserInput = renderer.getUserInput();
-        UserInput = renderer.getUserInput();
-        UserInput = renderer.getUserInput();
-        game.update();
-        renderer.printMessage("Example message");
+        UserInput1 = renderer.getUserInput();
+        UserInput2 = renderer.getUserInput();
+        
+        mess = game.update(UserInput1[0], UserInput1[1], UserInput2[0], UserInput2[1]);
+        
 
     }
 

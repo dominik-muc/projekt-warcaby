@@ -74,6 +74,9 @@ std::array<int, 2>  AsciiRenderer::select_square()
             case '\r':
             case KEY_SEND:
                 return input;
+            case 'q':
+                closeRenderer();
+                exit(0);
             default:
                 break;
         }

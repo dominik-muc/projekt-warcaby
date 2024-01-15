@@ -1,4 +1,4 @@
-#include "Warcaby/TextRenderer/textrenderer.hpp"
+#include "Warcaby/Renderer/ascii_renderer.hpp"
 #include <ncurses.h>
 
 AsciiRenderer::AsciiRenderer()

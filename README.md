@@ -38,3 +38,8 @@ Wymagana jest biblioteka ncurses, do pobrania np. w następujący sposób
 ```sh
 apt-get install libncurses-dev
 ```
+
+# Jak grać:
+- Ascii renderer:
+    strzałki żeby wybrać pole. Enter żeby potwierdzić.
+    Chwilowo uruchamiane jako ./build/apps/test_main

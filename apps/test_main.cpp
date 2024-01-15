@@ -2,7 +2,7 @@
 #include "Warcaby/Game/game.h"
 #include "Warcaby/types.h"
 
-#include "Warcaby/TextRenderer/textrenderer.hpp"
+#include "Warcaby/Renderer/ascii_renderer.hpp"
 
 using namespace std;
 

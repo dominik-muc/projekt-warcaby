@@ -24,7 +24,7 @@ class AsciiRenderer : Renderer{
 
     private:
         // acording to FieldType from types.h
-        const char* piece_art[5] = {"_", "o", "O", "x", "X"};
+        const char* piece_art[5] = {"_", "o", "x", "O", "X"};
         std::string message;
         std::array<int, 2> select_square();
 };

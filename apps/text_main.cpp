@@ -2,7 +2,7 @@
 #include "Warcaby/Game/game.h"
 #include "Warcaby/types.h"
 
-#include "Warcaby/Renderer/ascii_renderer.hpp"
+#include "Warcaby/Renderer/text_renderer.hpp"
 
 using namespace std;
 
@@ -10,7 +10,7 @@ int main() {
     
     // tworzymy obiekt gry
     Game game;
-    AsciiRenderer renderer;
+    TextRenderer renderer;
 
     array<int, 2> UserInput1, UserInput2;
     string player;
@@ -31,8 +31,9 @@ int main() {
 
     }
 
+    renderer.closeRenderer();
     // wypisujemy kto wygral
-    //cout << "Wygral gracz: " << game.gameState << endl;
+    cout << "Wygral gracz: " << game.gameState << endl;
     
     return 0;
 }

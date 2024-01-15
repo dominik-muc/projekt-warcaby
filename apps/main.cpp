@@ -12,7 +12,8 @@ int main() {
     // glowna petla gry
     while(game.gameState == ONGOING){
         game.render();
-        cout << "Ruch gracza: " << game.currentMove << endl;
+        string player = game.currentMove == SYMBOL_WHITE ? "Bialy" : "Czarny";
+        cout << "Ruch gracza: " << player << endl;
         cout << "Podaj ruch: " << endl;
         game.update();        
     }

@@ -92,11 +92,11 @@ void Game::update()
     {
         if (retrievedBoard[0][i] == 1)
         {
-            retrievedBoard[0][i] = 3;
+            board.setField(0, i, 3);            
         }
         if (retrievedBoard[7][i] == 2)
         {
-            retrievedBoard[7][i] = 4;
+            board.setField(7, i, 4);            
         }
     }
 

@@ -19,9 +19,15 @@ class TextRenderer : Renderer{
     public:
         TextRenderer();
         void printBoard(std::array<std::array<int, 8>, 8> board );
+        
         void closeRenderer();
+       
         std::array<int, 2> getUserInput();
+        
         void printMessage(std::string message);
+
+        void open_help();
+        void open_win_screen(GameState winner);
         
 
     private:
@@ -60,10 +66,8 @@ class TextRenderer : Renderer{
 
         WINDOW* board_win;
         WINDOW* text_win;
-        WINDOW* help_win;
 
-        void destroy_win(WINDOW *local_win);
-
+        WINDOW* open_popup(int x, int y, int size_x, int size_y);
 
         std::array<int, 2> select_square();
 

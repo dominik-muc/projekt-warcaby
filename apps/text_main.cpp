@@ -16,6 +16,12 @@ int main() {
     string player;
     string mess = "";
 
+
+    renderer.printBoard(game.getBoard());
+    renderer.open_help();
+
+    renderer.open_win_screen(game.gameState);
+
     // glowna petla gry
     while(game.gameState == ONGOING){
 
@@ -33,8 +39,12 @@ int main() {
 
     }
 
-    renderer.closeRenderer();
+    
     // wypisujemy kto wygral
+    
+    renderer.open_win_screen(game.gameState);
+    renderer.closeRenderer();
+
     cout << "Wygral gracz: " << game.gameState << endl;
     
     return 0;

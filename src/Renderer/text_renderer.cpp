@@ -1,8 +1,11 @@
 #include "Warcaby/Renderer/text_renderer.hpp"
 #include <ncurses.h>
 
+#define MAX(a, b) (( (a)>(b)?(a):(b) ))
+
 TextRenderer::TextRenderer()
 {
+    
     initscr();
     cbreak();
     keypad(stdscr, TRUE);
@@ -13,7 +16,8 @@ TextRenderer::TextRenderer()
     board_win = newwin(34, 73, 0, 0);
     wrefresh(board_win);
     
-    text_win = newwin(34, 25, 0, 75);
+    // text_win has width of 25 or more
+    text_win = newwin(34, MAX(25, getmaxx(stdscr)-75 ), 0, 75);
     wrefresh(text_win);
 
     
@@ -48,7 +52,8 @@ void TextRenderer::printBoard( std::array<std::array<int, 8>, 8> board )
     wclear(text_win);
     box(text_win, 0, 0);
     for(int i = 2 ; !messages.empty(); i++ ){
-        mvwprintw(text_win, 2+i, 2, "%s", messages.front().c_str());
+        // horizontal position - ~8% margin of window width or 2
+        mvwprintw(text_win, 2+i, MAX(2, getmaxx(text_win)/12 ), "%s", messages.front().c_str());
         messages.pop();
     }
     
@@ -78,6 +83,126 @@ void TextRenderer::printMessage(std::string str)
     messages.push(str);
 }
 
+WINDOW* TextRenderer::open_popup(int x, int y, int size_x, int size_y){
+    WINDOW* popup = newwin(size_x, size_y, x, y);
+    box(popup, 0, 0);
+    wrefresh(popup);
+    return popup;
+}
+
+void TextRenderer::open_win_screen(GameState winner){
+    // window (slightly above) centered or in corner if screen is too small
+    WINDOW* help_win = open_popup( MAX(2, (getmaxy(stdscr)/2)-15-2), MAX(4, (getmaxx(stdscr)/2)-46), 30, 92);
+    // any button to close includes mouse buttons
+    mousemask(ALL_MOUSE_EVENTS, NULL);
+
+    std::string win_name;
+    if(winner == BLACK_WIN) win_name = "BLACK";
+    else if(winner == WHITE_WIN) win_name = "WHITE";
+    else win_name = "NOBODY! YOU CHEATED";
+
+
+    // to help with positioning
+    #define title_start 3
+    #define text_start 14
+
+    mvwaddstr(help_win, title_start  , 32, "||===|  ||\\\\    ||   ||==\\\\ ");
+    mvwaddstr(help_win, title_start+1, 32, "||      || \\\\   ||   ||   ||");
+    mvwaddstr(help_win, title_start+2, 32, "||===|  ||  \\\\  ||   ||   ||");
+    mvwaddstr(help_win, title_start+3, 32, "||      ||   \\\\ ||   ||   ||");
+    mvwaddstr(help_win, title_start+4, 32, "||===|  ||    \\\\||   ||===//");
+    
+    mvwaddstr(help_win, text_start, 39, "THE WINNER IS:");
+
+    wattron(help_win, A_BOLD);
+    mvwaddstr(help_win, text_start+2, (int)((92-win_name.length())/2), win_name.c_str());
+
+
+    #undef title_start
+    #undef text_start
+
+
+    // May not be defined in some curses versions
+    #ifdef A_ITALIC
+        wattron(help_win, A_ITALIC);
+    #endif
+
+    wattron(help_win, A_BLINK);
+    mvwaddstr(help_win, 24, 33, "<PRESS ANY BUTTON TO CLOSE>");
+    wattroff(help_win, A_BLINK|A_BLINK);
+
+    #ifdef A_ITALIC
+        wattroff(help_win, A_ITALIC);
+    #endif
+
+    wrefresh(help_win);
+    getch();
+
+    mousemask(0, NULL);
+    wclear(help_win);
+    wrefresh(help_win);
+    delwin(help_win);
+
+    // force rerender other windows
+    touchwin(board_win);
+    touchwin(text_win);
+    wrefresh(board_win);
+    wrefresh(text_win);
+}
+
+void TextRenderer::open_help(){
+    // window (slightly above) centered or in corner if screen is too small
+    WINDOW* help_win = open_popup( MAX(2, (getmaxy(stdscr)/2)-15-2), MAX(4, (getmaxx(stdscr)/2)-46), 30, 92);
+    // any button to close includes mouse buttons
+    mousemask(ALL_MOUSE_EVENTS, NULL);
+
+    // to help with positioning
+    #define title_start 3
+    #define text_start 12
+
+    mvwaddstr(help_win, title_start  , 29, "||   ||  ||===|  ||       |===\\\\ ");
+    mvwaddstr(help_win, title_start+1, 29, "||   ||  ||      ||       ||   ||");
+    mvwaddstr(help_win, title_start+2, 29, "|=====|  ||===|  ||       |===// ");
+    mvwaddstr(help_win, title_start+3, 29, "||   ||  ||      ||       ||     ");
+    mvwaddstr(help_win, title_start+4, 29, "||   ||  ||===|  |====|   ||     ");
+
+    mvwaddstr(help_win, text_start, 10, "This is the help menu ");
+    mvwaddstr(help_win, text_start+1, 10, "Select square using arrows and confirm with enter");
+    mvwaddstr(help_win, text_start+2, 10, "You can also use mouse");
+    mvwaddstr(help_win, text_start+3, 10, "To quit press \'q\'");
+    mvwaddstr(help_win, text_start+4, 10, "To reopen this menu press \'h\'");
+
+    #undef title_start
+    #undef text_start
+
+    // May not be defined in some curses versions
+    #ifdef A_ITALIC
+        wattron(help_win, A_ITALIC);
+    #endif
+
+    wattron(help_win, A_BLINK|A_BOLD);
+    mvwaddstr(help_win, 24, 33, "<PRESS ANY BUTTON TO CLOSE>");
+    wattroff(help_win, A_BLINK|A_BLINK);
+
+    #ifdef A_ITALIC
+        wattroff(help_win, A_ITALIC);
+    #endif
+
+    wrefresh(help_win);
+    getch();
+
+    mousemask(0, NULL);
+    wclear(help_win);
+    wrefresh(help_win);
+    delwin(help_win);
+
+    // force rerender other windows
+    touchwin(board_win);
+    touchwin(text_win);
+    wrefresh(board_win);
+    wrefresh(text_win);
+}
+
 std::array<int, 2>  TextRenderer::select_square()
 {
     std::array<int, 2> input = {0, 0};
@@ -103,6 +228,7 @@ std::array<int, 2>  TextRenderer::select_square()
                         input[0] = (event.y-1)/4;
                         input[1] = (event.x-1)/9;
                         update_square(input[0], input[1], A_BLINK| (((input[0]+input[1])%2) ? A_STANDOUT : A_NORMAL) );
+                        mousemask(0, NULL);
                         return input;
                     }
                 }
@@ -135,12 +261,19 @@ std::array<int, 2>  TextRenderer::select_square()
                 }
 
                 break;
+            case 'h':
+            case 'H':
+                open_help();                
+                break;
             case KEY_ENTER:
             case '\n':
             case '\r':
             case KEY_SEND:
+                mousemask(0, NULL);
                 return input;
             case 'q':
+            case 'Q':
+                mousemask(0, NULL);
                 closeRenderer();
                 exit(0);
             default:

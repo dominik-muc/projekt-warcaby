@@ -19,9 +19,11 @@ int main() {
     // glowna petla gry
     while(game.gameState == ONGOING){
 
-        renderer.printBoard(game.getBoard());
+        
         player = game.currentMove == SYMBOL_WHITE ? "Bialy" : "Czarny";
-        renderer.printMessage(mess + "\n\nRuch gracza: " + player + "\nPodaj ruch");
+        renderer.printMessage("Ruch gracza: " + player);
+        renderer.printMessage(mess);
+        renderer.printBoard(game.getBoard());
         
         UserInput1 = renderer.getUserInput();
         UserInput2 = renderer.getUserInput();

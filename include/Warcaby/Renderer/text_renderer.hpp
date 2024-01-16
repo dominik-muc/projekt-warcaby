@@ -2,6 +2,7 @@
 
 #include <array>
 #include <string>
+#include <queue>
 
 #ifdef _WIN32
     #include <pdcurses.h>
@@ -21,34 +22,50 @@ class TextRenderer : Renderer{
         void closeRenderer();
         std::array<int, 2> getUserInput();
         void printMessage(std::string message);
+        
 
     private:
         // acording to FieldType from types.h
-        const char* piece_art[5][4] = {
+        const char* piece_art[5][3] = {
             {"        ",
              "        ",
              "        ",
-             "        "},
+          // "________"
+             },
+
+            {"        ",
+             " /####\\ ",
+             " \\####/ ",
+          // "________"
+             },
 
             {"   __   ",
              " /    \\ ",
-             "|      |",
-             " \\ __ / "},
-
-            {"   __   ",
-             " /    \\ ",
-             "|      |",
-             " \\ __ / "},
+             " \\ __ / ",
+          // "________"
+          },
+            {"|\\/\\/\\/|",
+             "|######|",
+             "<——————>",
+          // "________"
+          },
             {"|\\/\\/\\/|",
              "|      |",
-             "|      |",
-             "<——————>"},
-            {"|\\/\\/\\/|",
-             "|      |",
-             "|      |",
-             "<——————>"}
+             "<——————>",
+          // "________"
+             }
         };
 
-        std::string message;
+        std::queue<std::string> messages;
+
+        WINDOW* board_win;
+        WINDOW* text_win;
+        WINDOW* help_win;
+
+        void destroy_win(WINDOW *local_win);
+
+
         std::array<int, 2> select_square();
+
+        void update_square(int x, int y, attr_t rev);
 };

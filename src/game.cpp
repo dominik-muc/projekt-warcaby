@@ -211,6 +211,19 @@ bool Game::isMoveLegal(int xp, int yp, int xk, int yk, Symbol currentMove)
             {
                 return true;
             }
+
+            if ((xk == (xp+2)) && (yk == yp-2) && (board.getField(xp+1, yp-1) == 1 || board.getField(xp+1, yp-1) == 3))
+            {
+                // wykonujemy bicie
+                board.setField(xp+1, yp-1, 0);
+                return true;
+            }
+            else if ((xk == xp+2) && (yk == yp+2) && (board.getField(xp+1, yp+1) == 1 || board.getField(xp+1, yp+1) == 3))
+            {
+                // wykonujemy bicie
+                board.setField(xp+1, yp+1, 0);
+                return true;
+            }
         }
         else if (board.getField(xp, yp) == 4)
         {

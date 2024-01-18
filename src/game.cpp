@@ -89,11 +89,11 @@ std::string Game::update(int xp, int yp, int xk, int yk)
     {
         if (retrievedBoard[0][i] == 1)
         {
-            retrievedBoard[0][i] = 3;
+            board.setField(0, i, 3);            
         }
         if (retrievedBoard[7][i] == 2)
         {
-            retrievedBoard[7][i] = 4;
+            board.setField(7, i, 4);            
         }
     }
 
@@ -208,6 +208,19 @@ bool Game::isMoveLegal(int xp, int yp, int xk, int yk, Symbol currentMove)
         {
             if (xk == xp + 1 && (yk == yp - 1 || yk == yp + 1))
             {
+                return true;
+            }
+
+            if ((xk == (xp+2)) && (yk == yp-2) && (board.getField(xp+1, yp-1) == 1 || board.getField(xp+1, yp-1) == 3))
+            {
+                // wykonujemy bicie
+                board.setField(xp+1, yp-1, 0);
+                return true;
+            }
+            else if ((xk == xp+2) && (yk == yp+2) && (board.getField(xp+1, yp+1) == 1 || board.getField(xp+1, yp+1) == 3))
+            {
+                // wykonujemy bicie
+                board.setField(xp+1, yp+1, 0);
                 return true;
             }
         }

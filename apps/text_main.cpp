@@ -31,6 +31,7 @@ int main() {
         
         UserInput1 = renderer.getUserInput();
         UserInput2 = renderer.getUserInput();
+        renderer.reset_selection();
         
         mess = game.update(UserInput1[0], UserInput1[1], UserInput2[0], UserInput2[1]);
         

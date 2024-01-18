@@ -205,59 +205,58 @@ void TextRenderer::open_help(){
 
 std::array<int, 2>  TextRenderer::select_square()
 {
-    std::array<int, 2> input = {0, 0};
     int ch;
     int rev;
     MEVENT event;
     mousemask(BUTTON1_CLICKED | REPORT_MOUSE_POSITION, NULL);
 
     while(true){
-        move(input[0]*4+1, input[1]*9+1);
+        move(last_selected[0]*4+1, last_selected[1]*9+1);
 
-        rev = (!((input[0]+input[1])%2) ? A_STANDOUT : A_NORMAL);
+        rev = (!((last_selected[0]+last_selected[1])%2) ? A_STANDOUT : A_NORMAL);
 
-        update_square(input[0], input[1], A_BLINK | (((input[0]+input[1])%2) ? A_STANDOUT : A_NORMAL) );
+        update_square(last_selected[0], last_selected[1], A_BLINK | (((last_selected[0]+last_selected[1])%2) ? A_STANDOUT : A_NORMAL) );
 
         ch = getch();
         switch(ch){
             case KEY_MOUSE:
                 if(getmouse(&event) == OK){
                     if(event.bstate & BUTTON1_PRESSED){
-                        update_square(input[0], input[1], rev);
+                        update_square(last_selected[0], last_selected[1], rev);
                         
-                        input[0] = (event.y-1)/4;
-                        input[1] = (event.x-1)/9;
-                        update_square(input[0], input[1], A_BLINK| (((input[0]+input[1])%2) ? A_STANDOUT : A_NORMAL) );
+                        last_selected[0] = (event.y-1)/4;
+                        last_selected[1] = (event.x-1)/9;
+                        update_square(last_selected[0], last_selected[1], A_BLINK| (((last_selected[0]+last_selected[1])%2) ? A_STANDOUT : A_NORMAL) );
                         mousemask(0, NULL);
-                        return input;
+                        return last_selected;
                     }
                 }
                 break;
             case KEY_UP:
-                update_square(input[0], input[1], rev);
-                if(input[0]!=0){
-                    input[0]--;
+                update_square(last_selected[0], last_selected[1], rev);
+                if(last_selected[0]!=0){
+                    last_selected[0]--;
                 }
 
                 break;
             case KEY_DOWN:
-                update_square(input[0], input[1], rev);
-                if(input[0]!=7){
-                    input[0]++;
+                update_square(last_selected[0], last_selected[1], rev);
+                if(last_selected[0]!=7){
+                    last_selected[0]++;
                 }
 
                 break;
             case KEY_LEFT:
-                update_square(input[0], input[1], rev);
-                if(input[1]!=0){
-                    input[1]--;
+                update_square(last_selected[0], last_selected[1], rev);
+                if(last_selected[1]!=0){
+                    last_selected[1]--;
                 }
 
                 break;
             case KEY_RIGHT:
-                update_square(input[0], input[1], rev);
-                if(input[1]!=7){
-                    input[1]++;
+                update_square(last_selected[0], last_selected[1], rev);
+                if(last_selected[1]!=7){
+                    last_selected[1]++;
                 }
 
                 break;
@@ -270,7 +269,7 @@ std::array<int, 2>  TextRenderer::select_square()
             case '\r':
             case KEY_SEND:
                 mousemask(0, NULL);
-                return input;
+                return last_selected;
             case 'q':
             case 'Q':
                 mousemask(0, NULL);
@@ -280,6 +279,10 @@ std::array<int, 2>  TextRenderer::select_square()
                 break;
         }
     }
+}
+
+void TextRenderer::reset_selection(){
+    last_selected = {0,0};
 }
 
 void TextRenderer::update_square(int x, int y, attr_t rev){

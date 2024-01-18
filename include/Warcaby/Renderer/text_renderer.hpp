@@ -23,6 +23,7 @@ class TextRenderer : Renderer{
         void closeRenderer();
        
         std::array<int, 2> getUserInput();
+        void reset_selection();
         
         void printMessage(std::string message);
 
@@ -69,6 +70,7 @@ class TextRenderer : Renderer{
 
         WINDOW* open_popup(int x, int y, int size_x, int size_y);
 
+        std::array<int, 2> last_selected = {0, 0};
         std::array<int, 2> select_square();
 
         void update_square(int x, int y, attr_t rev);

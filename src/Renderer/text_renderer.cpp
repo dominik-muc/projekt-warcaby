@@ -1,7 +1,6 @@
 #include "Warcaby/Renderer/text_renderer.hpp"
 #include <ncurses.h>
 
-#define MAX(a, b) (( (a)>(b)?(a):(b) ))
 
 TextRenderer::TextRenderer()
 {
@@ -16,7 +15,7 @@ TextRenderer::TextRenderer()
     wrefresh(board_win);
     
     // text_win has width of 25 or more
-    text_win = newwin(34, MAX(25, getmaxx(stdscr)-75 ), 0, 75);
+    text_win = newwin(34, std::max(25, getmaxx(stdscr)-75 ), 0, 75);
     wrefresh(text_win);  
 }
 
@@ -51,7 +50,7 @@ void TextRenderer::printBoard( std::array<std::array<int, 8>, 8> board )
     box(text_win, 0, 0);
     for(int i = 2 ; !messages.empty(); i++ ){
         // horizontal position - ~8% margin of window width or 2
-        mvwprintw(text_win, 2+i, MAX(2, getmaxx(text_win)/12 ), "%s", messages.front().c_str());
+        mvwprintw(text_win, 2+i, std::max(2, getmaxx(text_win)/12 ), "%s", messages.front().c_str());
         messages.pop();
     }
     
@@ -88,7 +87,7 @@ WINDOW* TextRenderer::open_popup(int x, int y, int size_x, int size_y){
 
 void TextRenderer::open_win_screen(GameState winner){
     // window (slightly above) centered or in corner if screen is too small
-    WINDOW* help_win = open_popup( MAX(2, (getmaxy(stdscr)/2)-15-2), MAX(4, (getmaxx(stdscr)/2)-46), 30, 92);
+    WINDOW* help_win = open_popup( std::max(2, (getmaxy(stdscr)/2)-15-2), std::max(4, (getmaxx(stdscr)/2)-46), 30, 92);
     // any button to close includes mouse buttons
     mousemask(ALL_MOUSE_EVENTS, NULL);
 
@@ -147,7 +146,7 @@ void TextRenderer::open_win_screen(GameState winner){
 
 void TextRenderer::open_help(){
     // window (slightly above) centered or in corner if screen is too small
-    WINDOW* help_win = open_popup( MAX(2, (getmaxy(stdscr)/2)-15-2), MAX(4, (getmaxx(stdscr)/2)-46), 30, 92);
+    WINDOW* help_win = open_popup( std::max(2, (getmaxy(stdscr)/2)-15-2), std::max(4, (getmaxx(stdscr)/2)-46), 30, 92);
     // any button to close includes mouse buttons
     mousemask(ALL_MOUSE_EVENTS, NULL);
 

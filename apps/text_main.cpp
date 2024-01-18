@@ -20,8 +20,6 @@ int main() {
     renderer.printBoard(game.getBoard());
     renderer.open_help();
 
-    renderer.open_win_screen(game.gameState);
-
     // glowna petla gry
     while(game.gameState == ONGOING){
 

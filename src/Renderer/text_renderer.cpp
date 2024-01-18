@@ -103,8 +103,8 @@ void TextRenderer::open_win_screen(GameState winner){
 
 
     // to help with positioning
-    #define title_start 3
-    #define text_start 14
+    constexpr int title_start = 3;
+    constexpr int text_start = 14;
 
     mvwaddstr(help_win, title_start  , 32, "||===|  ||\\\\    ||   ||==\\\\ ");
     mvwaddstr(help_win, title_start+1, 32, "||      || \\\\   ||   ||   ||");
@@ -116,10 +116,6 @@ void TextRenderer::open_win_screen(GameState winner){
 
     wattron(help_win, A_BOLD);
     mvwaddstr(help_win, text_start+2, (int)((92-win_name.length())/2), win_name.c_str());
-
-
-    #undef title_start
-    #undef text_start
 
 
     // May not be defined in some curses versions
@@ -225,6 +221,13 @@ std::array<int, 2>  TextRenderer::select_square()
             case KEY_MOUSE:
                 if(getmouse(&event) == OK){
                     if(event.bstate & BUTTON1_PRESSED){
+                        
+                        // check if press is inside the board
+                        if(event.y>32 | event.x>71){
+                            break;
+                        }
+                        
+
                         update_square(last_selected[0], last_selected[1], rev);
                         
                         last_selected[0] = (event.y-1)/4;

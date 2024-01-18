@@ -5,7 +5,6 @@
 
 TextRenderer::TextRenderer()
 {
-    
     initscr();
     cbreak();
     keypad(stdscr, TRUE);
@@ -18,14 +17,13 @@ TextRenderer::TextRenderer()
     
     // text_win has width of 25 or more
     text_win = newwin(34, MAX(25, getmaxx(stdscr)-75 ), 0, 75);
-    wrefresh(text_win);
-
-    
+    wrefresh(text_win);  
 }
 
 void TextRenderer::printBoard( std::array<std::array<int, 8>, 8> board )
 {
     wclear(board_win);
+    wresize(board_win, 34, 73);
     box(board_win, 0, 0);
     for(int i=0; i<8; i++){
         for(int j=0; j<8; j++){
@@ -57,8 +55,6 @@ void TextRenderer::printBoard( std::array<std::array<int, 8>, 8> board )
         messages.pop();
     }
     
-    
-
     refresh();
     wrefresh(board_win);
     wrefresh(text_win);
@@ -156,8 +152,8 @@ void TextRenderer::open_help(){
     mousemask(ALL_MOUSE_EVENTS, NULL);
 
     // to help with positioning
-    #define title_start 3
-    #define text_start 12
+    constexpr int title_start = 3;
+    constexpr int text_start = 12;
 
     mvwaddstr(help_win, title_start  , 29, "||   ||  ||===|  ||       |===\\\\ ");
     mvwaddstr(help_win, title_start+1, 29, "||   ||  ||      ||       ||   ||");
@@ -171,8 +167,6 @@ void TextRenderer::open_help(){
     mvwaddstr(help_win, text_start+3, 10, "To quit press \'q\'");
     mvwaddstr(help_win, text_start+4, 10, "To reopen this menu press \'h\'");
 
-    #undef title_start
-    #undef text_start
 
     // May not be defined in some curses versions
     #ifdef A_ITALIC
@@ -221,13 +215,11 @@ std::array<int, 2>  TextRenderer::select_square()
             case KEY_MOUSE:
                 if(getmouse(&event) == OK){
                     if(event.bstate & BUTTON1_PRESSED){
-                        
                         // check if press is inside the board
                         if(event.y>32 | event.x>71){
                             break;
                         }
                         
-
                         update_square(last_selected[0], last_selected[1], rev);
                         
                         last_selected[0] = (event.y-1)/4;

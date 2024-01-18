@@ -7,10 +7,18 @@ project(
     VERSION 0.1 
     DESCRIPTION "Warcaby w C++. Wow")
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
-#narazie to komentuje -> musimy zrobić to zależnie od platformy, bo z tego co Wojtek mówił nie ma ncurses na windowsa i nie chce się projekt zbudować.
-#find_package(Curses REQUIRED)
-#include_directories(${CURSES_INCLUDE_DIR})
+find_package (PDCurses)
+if(PDCURSES_FOUND)
+    set(CURSES_FOUND ${PDCURSES_FOUND})
+    set(CURSES_LIBRARIES ${PDCURSES_LIBRARY})
+    set(CURSES_INCLUDE_DIRS ${PDCURSES_INCLUDE_DIR})
+else()
+    find_package (Curses REQUIRED)
+endif()
+
+include_directories(${CURSES_INCLUDE_DIR})
     
 
 add_subdirectory(apps)

@@ -31,13 +31,11 @@ void Game::render()
     }
 }
 
-void Game::update()
+std::string Game::update(int xp, int yp, int xk, int yk)
 {
     std::array<std::array<int, 8>, 8> retrievedBoard = board.getBoard(); // pobieramy aktualny stan planszy
 
     // pobieramy ruch od gracza
-    int xp, yp, xk, yk;
-    cin >> xp >> yp >> xk >> yk;
 
     // sprawdzamy czy ruch jest legalny
     int legal = isMoveLegal(xp, yp, xk, yk, currentMove);
@@ -47,8 +45,7 @@ void Game::update()
         board.setField(xk, yk, board.getField(xp, yp));
         board.setField(xp, yp, 0);
     } else {
-        cout << "Ruch nie jest legalny" << endl;
-        return;
+        return "Ruch nie jest legalny";
     }
 
     // sprawdzamy czy na planszy zostaly pionki przeciwnika, jesli nie to konczymy gre i ustawiamy stan gry na wygrana gracza ktory ma aktualnie ruch
@@ -66,7 +63,7 @@ void Game::update()
     if (count == 0)
     {
         gameState = WHITE_WIN;
-        return;
+        return "";
     }
     for (int i = 0; i < 8; i++)
     {
@@ -81,7 +78,7 @@ void Game::update()
     if (count == 0)
     {
         gameState = BLACK_WIN;
-        return;
+        return "";
     }
 
     // jeszcze sprawdzamy czy gracz ktory ma aktualnie ruch moze wykonac jakies bicie, jesli nie to zmieniamy gracza ktory ma aktualnie ruch
@@ -109,6 +106,8 @@ void Game::update()
     {
         currentMove = SYMBOL_WHITE;
     }
+
+    return "";
 }
 
 bool Game::isMoveLegal(int xp, int yp, int xk, int yk, Symbol currentMove)
@@ -261,4 +260,8 @@ bool Game::isMoveLegal(int xp, int yp, int xk, int yk, Symbol currentMove)
 
     // zwracamy falsz jesli nie spelnia zadnego z powyzszych warunkow
     return false;
+}
+
+std::array<std::array<int, 8>, 8> Game::getBoard(){
+    return board.getBoard();
 }

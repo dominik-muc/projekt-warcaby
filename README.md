@@ -29,3 +29,17 @@ Aby ją uruchomić, z głównego katalogu wykonaj polecenie `./build/apps/main`.
 - Rafał Pęcherz
 - Stanisław Burdzicki
 - Nadia Uczkiewicz
+
+<br />
+<br />
+
+# Instrukcje Budowania
+Wymagana jest biblioteka ncurses, do pobrania np. w następujący sposób
+```sh
+apt-get install libncurses-dev
+```
+
+# Jak grać:
+- Ascii renderer:
+    strzałki żeby wybrać pole. Enter żeby potwierdzić.
+    Chwilowo uruchamiane jako ./build/apps/test_main

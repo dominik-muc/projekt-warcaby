@@ -136,6 +136,9 @@ void TextRenderer::open_win_screen(GameState winner){
     #endif
 
     wrefresh(help_win);
+    // wait for any input before closing
+    // twice so we dont close it accidentally
+    getch();
     getch();
 
     mousemask(0, NULL);

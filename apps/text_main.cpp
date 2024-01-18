@@ -44,7 +44,7 @@ int main() {
     renderer.open_win_screen(game.gameState);
     renderer.closeRenderer();
 
-    cout << "Wygral gracz: " << game.gameState << endl;
+    cout << "Wygral gracz: " << (game.currentMove == SYMBOL_WHITE ? "Bialy" : "Czarny") << endl;
     
     return 0;
 }

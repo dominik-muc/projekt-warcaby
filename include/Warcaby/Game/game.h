@@ -29,6 +29,9 @@ private:
     // funkcja sprawdzajaca czy ruch jest legalny
     bool isMoveLegal(int xp, int yp, int xk, int yk, Symbol currentMove);
 
+    // ilosc bialych i czarnych pionkow
+    std::array<int, 8> piece_counts = {12, 12};
+
     // plansza
     Board board;
 };

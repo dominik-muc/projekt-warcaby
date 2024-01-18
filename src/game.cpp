@@ -49,33 +49,12 @@ std::string Game::update(int xp, int yp, int xk, int yk)
     }
 
     // sprawdzamy czy na planszy zostaly pionki przeciwnika, jesli nie to konczymy gre i ustawiamy stan gry na wygrana gracza ktory ma aktualnie ruch
-    int count = 0;
-    for (int i = 0; i < 8; i++)
-    {
-        for (int j = 0; i < 8; i++)
-        {
-            if (retrievedBoard[i][j] == 2 || retrievedBoard[i][j] == 4)
-            {
-                count++;
-            }
-        }
-    }
-    if (count == 0)
+    if (piece_counts[1] == 0)
     {
         gameState = WHITE_WIN;
         return "";
     }
-    for (int i = 0; i < 8; i++)
-    {
-        for (int j = 0; i < 8; i++)
-        {
-            if (retrievedBoard[i][j] == 1 || retrievedBoard[i][j] == 3)
-            {
-                count++;                
-            }
-        }
-    }
-    if (count == 0)
+    if (piece_counts[0] == 0)
     {
         gameState = BLACK_WIN;
         return "";
@@ -162,12 +141,14 @@ bool Game::isMoveLegal(int xp, int yp, int xk, int yk, Symbol currentMove)
             {
                 // wykonujemy bicie
                 board.setField(xp-1, yp-1, 0);
+                piece_counts[1]--;
                 return true;
             }
             else if ((xk == xp-2) && (yk == yp+2) && (board.getField(xp-1, yp+1) == 2 || board.getField(xp-1, yp+1) == 4))
             {
                 // wykonujemy bicie
                 board.setField(xp-1, yp+1, 0);
+                piece_counts[1]--;
                 return true;
             }
         }
@@ -180,24 +161,28 @@ bool Game::isMoveLegal(int xp, int yp, int xk, int yk, Symbol currentMove)
             {
                 // wykonujemy bicie
                 board.setField(xp-1, yp-1, 0);
+                piece_counts[1]--;
                 return true;
             }
             else if ((xk == xp-2) && (yk == yp+2) && (board.getField(xp-1, yp+1) == 2 || board.getField(xp-1, yp+1) == 4))
             {
                 // wykonujemy bicie
                 board.setField(xp-1, yp+1, 0);
+                piece_counts[1]--;
                 return true;
             }
             else if ((xk == (xp+2)) && (yk == yp-2) && (board.getField(xp+1, yp-1) == 2 || board.getField(xp+1, yp-1) == 4))
             {
                 // wykonujemy bicie
                 board.setField(xp+1, yp-1, 0);
+                piece_counts[1]--;
                 return true;
             }
             else if ((xk == xp+2) && (yk == yp+2) && (board.getField(xp+1, yp+1) == 2 || board.getField(xp+1, yp+1) == 4))
             {
                 // wykonujemy bicie
                 board.setField(xp+1, yp+1, 0);
+                piece_counts[1]--;
                 return true;
             }      
         }
@@ -215,12 +200,14 @@ bool Game::isMoveLegal(int xp, int yp, int xk, int yk, Symbol currentMove)
             {
                 // wykonujemy bicie
                 board.setField(xp+1, yp-1, 0);
+                piece_counts[0]--;
                 return true;
             }
             else if ((xk == xp+2) && (yk == yp+2) && (board.getField(xp+1, yp+1) == 1 || board.getField(xp+1, yp+1) == 3))
             {
                 // wykonujemy bicie
                 board.setField(xp+1, yp+1, 0);
+                piece_counts[0]--;
                 return true;
             }
         }
@@ -235,24 +222,28 @@ bool Game::isMoveLegal(int xp, int yp, int xk, int yk, Symbol currentMove)
             {
                 // wykonujemy bicie
                 board.setField(xp-1, yp-1, 0);
+                piece_counts[0]--;
                 return true;
             }
             else if ((xk == xp-2) && (yk == yp+2) && (board.getField(xp-1, yp+1) == 1 || board.getField(xp-1, yp+1) == 3))
             {
                 // wykonujemy bicie
                 board.setField(xp-1, yp+1, 0);
+                piece_counts[0]--;
                 return true;
             }
             else if ((xk == (xp+2)) && (yk == yp-2) && (board.getField(xp+1, yp-1) == 1 || board.getField(xp+1, yp-1) == 3))
             {
                 // wykonujemy bicie
                 board.setField(xp+1, yp-1, 0);
+                piece_counts[0]--;
                 return true;
             }
             else if ((xk == xp+2) && (yk == yp+2) && (board.getField(xp+1, yp+1) == 1 || board.getField(xp+1, yp+1) == 3))
             {
                 // wykonujemy bicie
                 board.setField(xp+1, yp+1, 0);
+                piece_counts[0]--;
                 return true;
             }      
         }

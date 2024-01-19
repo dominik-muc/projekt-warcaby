@@ -182,6 +182,7 @@ void TextRenderer::open_help(){
 
     wrefresh(help_win);
     getch();
+    getch();
 
     mousemask(0, NULL);
     wclear(help_win);

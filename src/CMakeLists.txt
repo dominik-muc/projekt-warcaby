@@ -14,6 +14,10 @@ file(GLOB_RECURSE
 
 add_library(exLibrary ${SRC_LIST} ${HEADER_LIST})
 target_include_directories(exLibrary PUBLIC ../include)
+if(PDCURSES_FOUND)
+	message("--dll--")
+    target_compile_definitions(exLibrary PRIVATE -DPDC_DLL_BUILD)
+endif()  
 
 target_include_directories(exLibrary PRIVATE
 	${CURSES_LIBRARIES})

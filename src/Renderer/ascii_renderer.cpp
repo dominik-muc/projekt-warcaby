@@ -1,10 +1,10 @@
 #include "Warcaby/Renderer/ascii_renderer.hpp"
-#include <ncurses.h>
 
 AsciiRenderer::AsciiRenderer()
 {
     initscr();
     keypad(stdscr, TRUE);
+    noecho();
     //printw("Hello World !!!\n");    
     refresh();
 }

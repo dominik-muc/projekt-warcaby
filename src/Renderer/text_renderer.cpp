@@ -1,11 +1,20 @@
 #include "Warcaby/Renderer/text_renderer.hpp"
-#include <ncurses.h>
+
+//prevent window resize
+#include <windows.h>
 
 
 TextRenderer::TextRenderer()
 {
+    // prevent window resize when run by itself
+    // does not prevent resize when run from terminal
+    HWND consoleWindow = GetConsoleWindow();
+    SetWindowLong(consoleWindow, GWL_STYLE, GetWindowLong(consoleWindow, GWL_STYLE) & ~WS_MAXIMIZEBOX & ~WS_SIZEBOX);
+
     initscr();
+    resize_term(34, 105);
     cbreak();
+    noecho();
     keypad(stdscr, TRUE);
     curs_set(0);
 
@@ -89,7 +98,7 @@ void TextRenderer::open_win_screen(GameState winner){
     // window (slightly above) centered or in corner if screen is too small
     WINDOW* help_win = open_popup( std::max(2, (getmaxy(stdscr)/2)-15-2), std::max(4, (getmaxx(stdscr)/2)-46), 30, 92);
     // any button to close includes mouse buttons
-    mousemask(ALL_MOUSE_EVENTS, NULL);
+    mousemask(BUTTON1_CLICKED | BUTTON2_CLICKED | BUTTON3_CLICKED | BUTTON4_CLICKED | BUTTON5_CLICKED, NULL);
 
     std::string win_name;
     if(winner == BLACK_WIN) win_name = "BLACK";
@@ -128,7 +137,8 @@ void TextRenderer::open_win_screen(GameState winner){
 
     wrefresh(help_win);
     // wait for any input before closing
-    // twice so we dont close it accidentally
+    // thrice so we dont close it accidentally
+    getch();
     getch();
     getch();
 
@@ -181,9 +191,29 @@ void TextRenderer::open_help(){
     #endif
 
     wrefresh(help_win);
-    getch();
 
-    mousemask(0, NULL);
+    int c;
+    while(c = getch()){
+        if(c==KEY_RESIZE){
+            resize_term(0, 0);
+            wresize(board_win, 34, 73);
+            wresize(text_win, 34, std::max(25, getmaxx(stdscr)-75 ));
+            wresize(help_win,  std::max(2, (getmaxy(stdscr)/2)-15-2), std::max(4, (getmaxx(stdscr)/2)-46));
+            
+            refresh();
+            
+            //wrefresh(board_win);
+            // wrefresh(text_win);
+            wrefresh(help_win);
+            //refresh();
+        }
+        else{
+            break;
+        }
+    }
+
+    
+
     wclear(help_win);
     wrefresh(help_win);
     delwin(help_win);
@@ -200,7 +230,7 @@ std::array<int, 2>  TextRenderer::select_square()
     int ch;
     int rev;
     MEVENT event;
-    mousemask(BUTTON1_CLICKED | REPORT_MOUSE_POSITION, NULL);
+    mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
 
     while(true){
         move(last_selected[0]*4+1, last_selected[1]*9+1);
@@ -211,8 +241,17 @@ std::array<int, 2>  TextRenderer::select_square()
 
         ch = getch();
         switch(ch){
+            case KEY_RESIZE:
+                resize_term(0, 0);
+                wresize(board_win, 34, 73);
+                wresize(text_win, 34, std::max(25, getmaxx(stdscr)-75 ));
+                
+                refresh();
+                wrefresh(board_win);
+                wrefresh(text_win);
+                refresh();    
             case KEY_MOUSE:
-                if(getmouse(&event) == OK){
+                if(nc_getmouse(&event) == OK){
                     if(event.bstate & BUTTON1_PRESSED){
                         // check if press is inside the board
                         if(event.y>32 | event.x>71){

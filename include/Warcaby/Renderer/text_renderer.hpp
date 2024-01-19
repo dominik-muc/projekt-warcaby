@@ -4,14 +4,9 @@
 #include <string>
 #include <queue>
 
-#ifdef _WIN32
-    #include <pdcurses.h>
-#else
-    #include <ncurses.h>
-#endif
+#include <curses.h>
 
-
-#include <Warcaby/Renderer/renderer.h>
+#include "Warcaby/Renderer/renderer.h"
 
 
 // A minimalistic renderer. Every piece is represented by one character.

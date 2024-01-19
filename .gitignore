@@ -1,3 +1,6 @@
 **/build
 **/_build
+**/manual_build
 **/.vscode
+**/PDCurses
+CMakeCache.txt

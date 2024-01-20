@@ -19,7 +19,7 @@ int main() {
         cout << "Ruch gracza: " << player << endl;
         cout << "Podaj ruch: " << endl;
         cin >> xp >> yp >> xk >> yk;
-        game.update(xp, yp, xk, yk);        
+        cout << game.update(xp, yp, xk, yk) << endl;        
     }
 
     // wypisujemy kto wygral

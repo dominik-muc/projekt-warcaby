@@ -42,4 +42,7 @@ apt-get install libncurses-dev
 # Jak grać:
 - Ascii renderer:
     strzałki żeby wybrać pole. Enter żeby potwierdzić.
-    Chwilowo uruchamiane jako ./build/apps/test_main
+    Chwilowo uruchamiane jako ./build/apps/ascii_main
+- Text renderer
+    jak ASCII lub myszką
+    Uruchamiamy jako ./build/text_main

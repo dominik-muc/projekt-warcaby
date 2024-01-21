@@ -21,6 +21,12 @@ W głownym katalogu wykonaj polecenie `cmake -S . -B build`, następnie `make -C
 Zbudowana aplikacja znajduje się w katalogu build/apps.  
 Aby ją uruchomić, z głównego katalogu wykonaj polecenie `./build/apps/main`.
 
+## Zasady gry
+Zwykłe pionki mogą poruszać się do przodu o jedno pole na skos lub o dwa w przypadku bicia.  
+Gdy pionek dojdzie do końca planszy, to zamienia się w damkę.  
+Damki mogą poruszać się oraz bić zarówno do przodu, jak i do tyłu.  
+Bicie jest przymusowe.
+
 ## Autorzy projektu
 - Dominik Muc
 - Kaja Matuszewska

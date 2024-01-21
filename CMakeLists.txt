@@ -23,3 +23,4 @@ include_directories(${CURSES_INCLUDE_DIR})
 
 add_subdirectory(apps)
 add_subdirectory(src)
+

@@ -4,6 +4,7 @@
 
 #include <Warcaby/Renderer/text_renderer.hpp>
 #include <Warcaby/Renderer/ascii_renderer.hpp>
+#include <Warcaby/Bot/bot.h>
 
 using namespace std;
 
@@ -82,7 +83,7 @@ int text_renderer(){
         UserInput1 = renderer.getUserInput();
         UserInput2 = renderer.getUserInput();
         
-        message = game.update(UserInput1[0], UserInput1[1], UserInput2[0], UserInput2[1]);
+        message = game.update(UserInput1[0], UserInput1[1], UserInput2[0], UserInput2[1], player);
         renderer.reset_selection();
     }
 
@@ -108,7 +109,7 @@ int ascii_renderer(){
         UserInput1 = renderer.getUserInput();
         UserInput2 = renderer.getUserInput();
 
-        message = game.update(UserInput1[0], UserInput1[1], UserInput2[0], UserInput2[1]);
+        message = game.update(UserInput1[0], UserInput1[1], UserInput2[0], UserInput2[1], player);
     }
 
     renderer.closeRenderer();

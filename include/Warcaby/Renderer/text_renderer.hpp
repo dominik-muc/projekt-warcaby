@@ -64,6 +64,7 @@ class TextRenderer : Renderer{
         WINDOW* text_win;
 
         WINDOW* open_popup(int x, int y, int size_x, int size_y);
+        void close_popup(WINDOW* popup);
 
         std::array<int, 2> last_selected = {0, 0};
         std::array<int, 2> select_square();

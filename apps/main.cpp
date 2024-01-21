@@ -83,6 +83,7 @@ int text_renderer(){
         UserInput2 = renderer.getUserInput();
         
         message = game.update(UserInput1[0], UserInput1[1], UserInput2[0], UserInput2[1]);
+        renderer.reset_selection();
     }
 
     renderer.open_win_screen(game.gameState);

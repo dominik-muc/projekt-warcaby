@@ -26,6 +26,7 @@ public:
     std::array<std::array<int, 8>, 8> getBoard();
 
 private:
+    bool Capture(int xp, int yp, int xk, int yk, int pawn, int pawn2, int color_to_beat, int rowModifier);
     bool isCapturePossible(int row, int column, int pawn, int rowModifier);
     // funkcja sprawdzajaca czy ruch jest legalny
     bool isMoveLegal(int xp, int yp, int xk, int yk, Symbol currentMove);

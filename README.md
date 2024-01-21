@@ -2,11 +2,11 @@
 
 W ramach projektu na zajęcia PWI przygotowaliśmy prostą grę w warcaby.
 
-## Budowanie aplikcaji
+## Budowanie aplikacji
 ### Zależności
 - CMake
 - Kompilator C++, wspierający standard C++20
-- ncurses (linux) / coś innego (windows)
+- ncurses (linux) / pdcurses (windows)
 
 ### Linux
 W głównym katalogu wykonaj polecenie `./build_linux.sh`.
@@ -42,4 +42,7 @@ apt-get install libncurses-dev
 # Jak grać:
 - Ascii renderer:
     strzałki żeby wybrać pole. Enter żeby potwierdzić.
-    Chwilowo uruchamiane jako ./build/apps/test_main
+    Chwilowo uruchamiane jako ./build/apps/ascii_main
+- Text renderer
+    jak ASCII lub myszką
+    Uruchamiamy jako ./build/text_main

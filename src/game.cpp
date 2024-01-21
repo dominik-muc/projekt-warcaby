@@ -60,6 +60,9 @@ std::string Game::update(int xp, int yp, int xk, int yk)
         return "";
     }
 
+    // ponownie pobieramy stan planszy żeby sprawdzić czy pionek zmienił się w damkę
+    retrievedBoard = board.getBoard(); 
+
     // sprawdzamy czy pionek doszedl do konca planszy, jesli tak to zmieniamy go na damke
     for (int i = 0; i < 8; i++)
     {

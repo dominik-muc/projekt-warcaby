@@ -60,9 +60,6 @@ std::string Game::update(int xp, int yp, int xk, int yk)
         return "";
     }
 
-    // jeszcze sprawdzamy czy gracz ktory ma aktualnie ruch moze wykonac jakies bicie, jesli nie to zmieniamy gracza ktory ma aktualnie ruch
-    // tu kod...
-
     // sprawdzamy czy pionek doszedl do konca planszy, jesli tak to zmieniamy go na damke
     for (int i = 0; i < 8; i++)
     {
@@ -124,138 +121,46 @@ bool Game::isMoveLegal(int xp, int yp, int xk, int yk, Symbol currentMove)
         return false;
     }
 
-    // damka moze isc o 1 na ukos w dowolnym kierunku, tzn w gore lub dol i na ukos o 1 lub 2 jesli bicie
-    // sprawdzamy czy ruch jest poprawny, jesli tak to wykonujemy ruch
-    // pionek
-
+    // sprawdzamy czy w tym ruchu jest możliwe bicie
+    // w przypadku białych pionków czy mozemy isc o 2 pola na ukos w gore i czy miedzy tym polem a aktualnym jest przeciwna figura
     if (currentMove == SYMBOL_WHITE)
     {
-        if (board.getField(xp, yp) == 1)
-        {            
-            // sprawdzamy czy mozemy wykonac bicie, tzn czy pomiedzy polem na ktory chcemy przejsc(chcemy przejsc o 2 na ukos), tzn na polu o 1 na ukos jest przeciwnik, wtedy go bijemy
-            if ((xk == (xp-2)) && (yk == yp-2) && (board.getField(xp-1, yp-1) == 2 || board.getField(xp-1, yp-1) == 4))
-            {
-                // wykonujemy bicie
-                board.setField(xp-1, yp-1, 0);
-                piece_counts[1]--;
-                return true;
-            }
-            else if ((xk == xp-2) && (yk == yp+2) && (board.getField(xp-1, yp+1) == 2 || board.getField(xp-1, yp+1) == 4))
-            {
-                // wykonujemy bicie
-                board.setField(xp-1, yp+1, 0);
-                piece_counts[1]--;
-                return true;
-            }
+        if (board.getField(xp, yp) == 1 && isCaptureLegal(xp, yp, xk, yk, 2, 4, 1, -1)){
+            return true;
+        } // analogicznie dla damki, tylko jeszcze sprawdzamy mozliwosc pojscia w dol
+        else if (board.getField(xp,yp) == 3 &&(isCaptureLegal(xp, yp, xk, yk, 2, 4, 1, -1) || isCaptureLegal(xp, yp, xk, yk, 2, 4, 1, 1))){
+            return true;
         }
-        else if (board.getField(xp,yp) == 3) {
-            // sprawdzamy czy mozemy wykonac bicie, tzn czy pomiedzy polem na ktory chcemy przejsc(chcemy przejsc o 2 na ukos), tzn na polu o 1 na ukos jest przeciwnik, wtedy go bijemy
-            if ((xk == (xp-2)) && (yk == yp-2) && (board.getField(xp-1, yp-1) == 2 || board.getField(xp-1, yp-1) == 4))
-            {
-                // wykonujemy bicie
-                board.setField(xp-1, yp-1, 0);
-                piece_counts[1]--;
-                return true;
-            }
-            else if ((xk == xp-2) && (yk == yp+2) && (board.getField(xp-1, yp+1) == 2 || board.getField(xp-1, yp+1) == 4))
-            {
-                // wykonujemy bicie
-                board.setField(xp-1, yp+1, 0);
-                piece_counts[1]--;
-                return true;
-            }
-            else if ((xk == (xp+2)) && (yk == yp-2) && (board.getField(xp+1, yp-1) == 2 || board.getField(xp+1, yp-1) == 4))
-            {
-                // wykonujemy bicie
-                board.setField(xp+1, yp-1, 0);
-                piece_counts[1]--;
-                return true;
-            }
-            else if ((xk == xp+2) && (yk == yp+2) && (board.getField(xp+1, yp+1) == 2 || board.getField(xp+1, yp+1) == 4))
-            {
-                // wykonujemy bicie
-                board.setField(xp+1, yp+1, 0);
-                piece_counts[1]--;
-                return true;
-            }      
-        }
-    }
+    } // i analogicznie dla czarnych figur, tylko dla pionka zamiast w gore - w dol
     else if (currentMove == SYMBOL_BLACK)
     {
-        if (board.getField(xp, yp) == 2)
-        {
-
-            if ((xk == (xp+2)) && (yk == yp-2) && (board.getField(xp+1, yp-1) == 1 || board.getField(xp+1, yp-1) == 3))
-            {
-                // wykonujemy bicie
-                board.setField(xp+1, yp-1, 0);
-                piece_counts[0]--;
-                return true;
-            }
-            else if ((xk == xp+2) && (yk == yp+2) && (board.getField(xp+1, yp+1) == 1 || board.getField(xp+1, yp+1) == 3))
-            {
-                // wykonujemy bicie
-                board.setField(xp+1, yp+1, 0);
-                piece_counts[0]--;
-                return true;
-            }
+        if (board.getField(xp, yp) == 2 && isCaptureLegal(xp, yp, xk, yk, 1, 3, 0, 1)){
+            return true;
         }
-        else if (board.getField(xp, yp) == 4)
-        {
-            // damka czarna robi doslownie to samo co biala, tylko musimy sprawdzic czy na polu pomiedzy biciem jest pionek przeciwnika, a nie nasz, da sie to zrobic lepiej jedna funkcja ale mi sie nie chce
-            // sprawdzamy czy mozemy wykonac bicie, tzn czy pomiedzy polem na ktory chcemy przejsc(chcemy przejsc o 2 na ukos), tzn na polu o 1 na ukos jest przeciwnik, wtedy go bijemy
-            if ((xk == (xp-2)) && (yk == yp-2) && (board.getField(xp-1, yp-1) == 1 || board.getField(xp-1, yp-1) == 3))
-            {
-                // wykonujemy bicie
-                board.setField(xp-1, yp-1, 0);
-                piece_counts[0]--;
-                return true;
-            }
-            else if ((xk == xp-2) && (yk == yp+2) && (board.getField(xp-1, yp+1) == 1 || board.getField(xp-1, yp+1) == 3))
-            {
-                // wykonujemy bicie
-                board.setField(xp-1, yp+1, 0);
-                piece_counts[0]--;
-                return true;
-            }
-            else if ((xk == (xp+2)) && (yk == yp-2) && (board.getField(xp+1, yp-1) == 1 || board.getField(xp+1, yp-1) == 3))
-            {
-                // wykonujemy bicie
-                board.setField(xp+1, yp-1, 0);
-                piece_counts[0]--;
-                return true;
-            }
-            else if ((xk == xp+2) && (yk == yp+2) && (board.getField(xp+1, yp+1) == 1 || board.getField(xp+1, yp+1) == 3))
-            {
-                // wykonujemy bicie
-                board.setField(xp+1, yp+1, 0);
-                piece_counts[0]--;
-                return true;
-            }      
+        else if (board.getField(xp, yp) == 4 && (isCaptureLegal(xp, yp, xk, yk, 1, 3, 0, 1) || isCaptureLegal(xp, yp, xk, yk, 1, 3, 0, -1))){ 
+            return true;
         }
     }
 
-    //Sprawdzamy, czy jest gdzies mozliwe bicie
+    //Sprawdzamy, czy gdzies indziej jest mozliwe bicie, jesli tak, to nie mozemy wykonac ruchu
     bool canCapture = false;
     for(int i = 0; i < 8; i++){
         for(int j = 0; j < 8; j++){
-            if(currentMove == SYMBOL_WHITE && board.getField(i, j) == 1 && 
-            (isCapturePossible(i, j, 2, -1) || isCapturePossible(i, j, 4, -1))){
+            if(currentMove == SYMBOL_WHITE && board.getField(i, j) == 1 && isCapturePossible(i, j, -1)){
                 canCapture = true;
                 break;
             }
             if(currentMove == SYMBOL_WHITE && board.getField(i, j) == 3 &&
-            (isCapturePossible(i, j, 2, -1) || isCapturePossible(i, j, 4, -1) || isCapturePossible(i, j, 2, 1) || isCapturePossible(i, j, 4, 1))){
+              (isCapturePossible(i, j, -1) || isCapturePossible(i, j, 1))){
                 canCapture = true;
                 break;
             }
-            if(currentMove == SYMBOL_BLACK && board.getField(i, j) == 2 &&
-            (isCapturePossible(i, j, 1, 1) || isCapturePossible(i, j, 3, 1))){
+            if(currentMove == SYMBOL_BLACK && board.getField(i, j) == 2 && isCapturePossible(i, j, 1)){
                 canCapture = true;
                 break;
             }
-            if(currentMove == SYMBOL_WHITE && board.getField(i, j) == 4 &&
-            (isCapturePossible(i, j, 1, 1) || isCapturePossible(i, j, 3, -1) || isCapturePossible(i, j, 1, -1) || isCapturePossible(i, j, 3, -1))){
+            if(currentMove == SYMBOL_BLACK && board.getField(i, j) == 4 && 
+            (isCapturePossible(i, j, 1) || isCapturePossible(i, j, -1))){
                 canCapture = true;
                 break;
             }                          
@@ -266,7 +171,7 @@ bool Game::isMoveLegal(int xp, int yp, int xk, int yk, Symbol currentMove)
     if(canCapture) return false;
 
 
-    //Sprawdzamy, czy mozemy ruszyc sie pionkiem o jedno pole na skos
+    //jesli wczesniej nie bylo mozliwe bicie, to prawdzamy, czy mozemy ruszyc sie pionkiem o jedno pole na skos
     if(currentMove == SYMBOL_WHITE && board.getField(xp, yp) == 1 && (xk == xp - 1 && (yk == yp - 1 || yk == yp + 1)))
     {
         return true;
@@ -286,12 +191,39 @@ bool Game::isMoveLegal(int xp, int yp, int xk, int yk, Symbol currentMove)
     return false;
 }
 
-bool Game::isCapturePossible(int row, int column, int pawn, int rowModifier){
-    if(board.getField(row+(rowModifier*1), column+1) == pawn && board.getField(row+(rowModifier*2), column+2) == 0 && 
+bool Game::isCaptureLegal(int xp, int yp, int xk, int yk, int pawn, int pawn2, int color_to_capture, int rowModifier){
+    if ((xk == xp+(rowModifier*2)) && (yk == yp-2) && (board.getField(xp+rowModifier, yp-1) == pawn || board.getField(xp+rowModifier, yp-1) == pawn2))
+        {
+            // wykonujemy bicie
+            board.setField(xp+rowModifier, yp-1, 0);
+            piece_counts[color_to_capture]--;
+            return true;
+        }
+    else if ((xk == xp+(rowModifier*2)) && (yk == yp+2) && (board.getField(xp+rowModifier, yp+1) == pawn || board.getField(xp+rowModifier, yp+1) == pawn2))
+        {
+            // wykonujemy bicie
+            board.setField(xp+rowModifier, yp+1, 0);
+            piece_counts[color_to_capture]--;
+            return true;
+        }    
+    return false;
+}
+
+bool Game::isOpponentPiece(int row, int column) {
+    int piece = board.getField(row, column);
+    if (currentMove == SYMBOL_WHITE) {
+        return (piece == 2 || piece == 4);
+    } else {
+        return (piece == 1 || piece == 3);
+    }
+}
+
+bool Game::isCapturePossible(int row, int column, int rowModifier){
+    if(isOpponentPiece(row+(rowModifier*1), column+1) && board.getField(row+(rowModifier*2), column+2) == 0 && 
     (row+(rowModifier*2) >= 0) && (row+(rowModifier*2) < 8) && column+2 < 8){
         return true;
     }
-    if(board.getField(row+(rowModifier*1), column-1) == pawn && board.getField(row+(rowModifier*2), column-2) == 0 && 
+    if(isOpponentPiece(row+(rowModifier*1), column-1) && board.getField(row+(rowModifier*2), column-2) == 0 && 
     (row+(rowModifier*2) >= 0) && (row+(rowModifier*2) < 8) && column-2 >= 0){
         return true;
     }    

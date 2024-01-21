@@ -1,8 +1,8 @@
 #include <iostream>
-#include "Warcaby/Game/game.h"
-#include "Warcaby/types.h"
+#include <Warcaby/Game/game.h>
+#include <Warcaby/types.h>
 
-#include "Warcaby/Renderer/text_renderer.hpp"
+#include <Warcaby/Renderer/text_renderer.hpp>
 
 using namespace std;
 

@@ -2,11 +2,11 @@
 
 W ramach projektu na zajęcia PWI przygotowaliśmy prostą grę w warcaby.
 
-## Budowanie aplikcaji
+## Budowanie aplikacji
 ### Zależności
 - CMake
 - Kompilator C++, wspierający standard C++20
-- ncurses (linux) / coś innego (windows)
+- ncurses (linux) / pdcurses (windows)
 
 ### Linux
 W głównym katalogu wykonaj polecenie `./build_linux.sh`.

@@ -6,6 +6,7 @@ TextRenderer::TextRenderer()
 {
     initscr();
     cbreak();
+    noecho();
     keypad(stdscr, TRUE);
     curs_set(0);
 
@@ -182,6 +183,7 @@ void TextRenderer::open_help(){
 
     wrefresh(help_win);
     getch();
+    getch();
 
     mousemask(0, NULL);
     wclear(help_win);
@@ -200,7 +202,7 @@ std::array<int, 2>  TextRenderer::select_square()
     int ch;
     int rev;
     MEVENT event;
-    mousemask(BUTTON1_CLICKED | REPORT_MOUSE_POSITION, NULL);
+    mousemask(BUTTON1_CLICKED | BUTTON1_PRESSED | REPORT_MOUSE_POSITION, NULL);
 
     while(true){
         move(last_selected[0]*4+1, last_selected[1]*9+1);
@@ -213,7 +215,7 @@ std::array<int, 2>  TextRenderer::select_square()
         switch(ch){
             case KEY_MOUSE:
                 if(getmouse(&event) == OK){
-                    if(event.bstate & BUTTON1_PRESSED){
+                    if(event.bstate & ( BUTTON1_CLICKED | BUTTON1_PRESSED )){
                         // check if press is inside the board
                         if(event.y>32 | event.x>71){
                             break;

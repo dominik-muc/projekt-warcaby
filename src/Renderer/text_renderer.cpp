@@ -6,6 +6,7 @@ TextRenderer::TextRenderer()
 {
     initscr();
     cbreak();
+    noecho();
     keypad(stdscr, TRUE);
     curs_set(0);
 
@@ -82,14 +83,29 @@ WINDOW* TextRenderer::open_popup(int x, int y, int size_x, int size_y){
     WINDOW* popup = newwin(size_x, size_y, x, y);
     box(popup, 0, 0);
     wrefresh(popup);
+
+    // any button to close includes mouse buttons
+    mousemask(ALL_MOUSE_EVENTS, NULL);
+
     return popup;
+}
+
+void TextRenderer::close_popup(WINDOW* popup){
+    mousemask(0, NULL);
+    wclear(popup);
+    wrefresh(popup);
+    delwin(popup);
+
+    // force rerender other windows
+    touchwin(board_win);
+    touchwin(text_win);
+    wrefresh(board_win);
+    wrefresh(text_win);
 }
 
 void TextRenderer::open_win_screen(GameState winner){
     // window (slightly above) centered or in corner if screen is too small
-    WINDOW* help_win = open_popup( std::max(2, (getmaxy(stdscr)/2)-15-2), std::max(4, (getmaxx(stdscr)/2)-46), 30, 92);
-    // any button to close includes mouse buttons
-    mousemask(ALL_MOUSE_EVENTS, NULL);
+    WINDOW* end_win = open_popup( std::max(2, (getmaxy(stdscr)/2)-15-2), std::max(4, (getmaxx(stdscr)/2)-46), 30, 92);
 
     std::string win_name;
     if(winner == BLACK_WIN) win_name = "BLACK";
@@ -101,47 +117,38 @@ void TextRenderer::open_win_screen(GameState winner){
     constexpr int title_start = 3;
     constexpr int text_start = 14;
 
-    mvwaddstr(help_win, title_start  , 32, "||===|  ||\\\\    ||   ||==\\\\ ");
-    mvwaddstr(help_win, title_start+1, 32, "||      || \\\\   ||   ||   ||");
-    mvwaddstr(help_win, title_start+2, 32, "||===|  ||  \\\\  ||   ||   ||");
-    mvwaddstr(help_win, title_start+3, 32, "||      ||   \\\\ ||   ||   ||");
-    mvwaddstr(help_win, title_start+4, 32, "||===|  ||    \\\\||   ||===//");
+    mvwaddstr(end_win, title_start  , 32, "||===|  ||\\\\    ||   ||==\\\\ ");
+    mvwaddstr(end_win, title_start+1, 32, "||      || \\\\   ||   ||   ||");
+    mvwaddstr(end_win, title_start+2, 32, "||===|  ||  \\\\  ||   ||   ||");
+    mvwaddstr(end_win, title_start+3, 32, "||      ||   \\\\ ||   ||   ||");
+    mvwaddstr(end_win, title_start+4, 32, "||===|  ||    \\\\||   ||===//");
     
-    mvwaddstr(help_win, text_start, 39, "THE WINNER IS:");
+    mvwaddstr(end_win, text_start, 39, "THE WINNER IS:");
 
-    wattron(help_win, A_BOLD);
-    mvwaddstr(help_win, text_start+2, (int)((92-win_name.length())/2), win_name.c_str());
+    wattron(end_win, A_BOLD);
+    mvwaddstr(end_win, text_start+2, (int)((92-win_name.length())/2), win_name.c_str());
 
 
     // May not be defined in some curses versions
     #ifdef A_ITALIC
-        wattron(help_win, A_ITALIC);
+        wattron(end_win, A_ITALIC);
     #endif
 
-    wattron(help_win, A_BLINK);
-    mvwaddstr(help_win, 24, 33, "<PRESS ANY BUTTON TO CLOSE>");
-    wattroff(help_win, A_BLINK|A_BLINK);
+    wattron(end_win, A_BLINK);
+    mvwaddstr(end_win, 24, 33, "<PRESS ANY BUTTON TO CLOSE>");
+    wattroff(end_win, A_BLINK|A_BOLD);
 
     #ifdef A_ITALIC
-        wattroff(help_win, A_ITALIC);
+        wattroff(end_win, A_ITALIC);
     #endif
 
-    wrefresh(help_win);
+    wrefresh(end_win);
     // wait for any input before closing
     // twice so we dont close it accidentally
     getch();
     getch();
 
-    mousemask(0, NULL);
-    wclear(help_win);
-    wrefresh(help_win);
-    delwin(help_win);
-
-    // force rerender other windows
-    touchwin(board_win);
-    touchwin(text_win);
-    wrefresh(board_win);
-    wrefresh(text_win);
+    close_popup(end_win);
 }
 
 void TextRenderer::open_help(){
@@ -152,7 +159,7 @@ void TextRenderer::open_help(){
 
     // to help with positioning
     constexpr int title_start = 3;
-    constexpr int text_start = 12;
+    constexpr int text_start = 10;
 
     mvwaddstr(help_win, title_start  , 29, "||   ||  ||===|  ||       |===\\\\ ");
     mvwaddstr(help_win, title_start+1, 29, "||   ||  ||      ||       ||   ||");
@@ -160,11 +167,20 @@ void TextRenderer::open_help(){
     mvwaddstr(help_win, title_start+3, 29, "||   ||  ||      ||       ||     ");
     mvwaddstr(help_win, title_start+4, 29, "||   ||  ||===|  |====|   ||     ");
 
-    mvwaddstr(help_win, text_start, 10, "This is the help menu ");
+    mvwaddstr(help_win, text_start  , 10, "This is the help menu ");
     mvwaddstr(help_win, text_start+1, 10, "Select square using arrows and confirm with enter");
     mvwaddstr(help_win, text_start+2, 10, "You can also use mouse");
     mvwaddstr(help_win, text_start+3, 10, "To quit press \'q\'");
     mvwaddstr(help_win, text_start+4, 10, "To reopen this menu press \'h\'");
+
+    wattron(help_win, A_BOLD);
+    mvwaddstr(help_win, text_start+6 , 10, "   RULES:");
+    wattroff(help_win, A_BOLD);
+
+    mvwaddstr(help_win, text_start+7 , 10, "1) Normal pieces can move one squre diagonally or two when capturing'");
+    mvwaddstr(help_win, text_start+8 , 10, "2) Capturing is mandatory");
+    mvwaddstr(help_win, text_start+9 , 10, "3) When a piece reaches the back line it changes into a queen");
+    mvwaddstr(help_win, text_start+10, 10, "4) Queens can move backwards");
 
 
     // May not be defined in some curses versions
@@ -182,17 +198,9 @@ void TextRenderer::open_help(){
 
     wrefresh(help_win);
     getch();
+    //getch();
 
-    mousemask(0, NULL);
-    wclear(help_win);
-    wrefresh(help_win);
-    delwin(help_win);
-
-    // force rerender other windows
-    touchwin(board_win);
-    touchwin(text_win);
-    wrefresh(board_win);
-    wrefresh(text_win);
+    close_popup(help_win);
 }
 
 std::array<int, 2>  TextRenderer::select_square()
@@ -200,7 +208,7 @@ std::array<int, 2>  TextRenderer::select_square()
     int ch;
     int rev;
     MEVENT event;
-    mousemask(BUTTON1_CLICKED | REPORT_MOUSE_POSITION, NULL);
+    mousemask(BUTTON1_CLICKED | BUTTON1_PRESSED | REPORT_MOUSE_POSITION, NULL);
 
     while(true){
         move(last_selected[0]*4+1, last_selected[1]*9+1);
@@ -213,7 +221,7 @@ std::array<int, 2>  TextRenderer::select_square()
         switch(ch){
             case KEY_MOUSE:
                 if(getmouse(&event) == OK){
-                    if(event.bstate & BUTTON1_PRESSED){
+                    if(event.bstate & ( BUTTON1_CLICKED | BUTTON1_PRESSED )){
                         // check if press is inside the board
                         if(event.y>32 | event.x>71){
                             break;
@@ -286,7 +294,7 @@ void TextRenderer::update_square(int x, int y, attr_t rev){
     mvwchgat(board_win, x*4+1, y*9+1, 8, rev, 0, NULL);
     mvwchgat(board_win, x*4+2, y*9+1, 8, rev, 0, NULL);
     mvwchgat(board_win, x*4+3, y*9+1, 8, rev, 0, NULL);
-    mvwchgat(board_win, x*4+4, y*9+1, 8, rev& (~A_BLINK), 0, NULL);
+    mvwchgat(board_win, x*4+4, y*9+1, 8, rev& (~A_BLINK), 0, NULL); // don't blink pottom line of square, but change its color
     wrefresh(board_win);
 }
 

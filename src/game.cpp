@@ -31,49 +31,66 @@ void Game::render()
     }
 }
 
-std::string Game::update(int xp, int yp, int xk, int yk)
+std::string Game::update(int xp, int yp, int xk, int yk, string player)
 {
     std::array<std::array<int, 8>, 8> retrievedBoard = board.getBoard(); // pobieramy aktualny stan planszy
+    
+    if(player != "bot"){
 
-    // pobieramy ruch od gracza
+        // pobieramy ruch od gracza
 
-    // sprawdzamy czy ruch jest legalny
-    int legal = isMoveLegal(xp, yp, xk, yk, currentMove);
-    if (legal)
-    {
-        // aktualizujemy plansze
-        board.setField(xk, yk, board.getField(xp, yp));
-        board.setField(xp, yp, 0);
-    } else {
-        return "Ruch nie jest legalny";
-    }
-
-    // sprawdzamy czy na planszy zostaly pionki przeciwnika, jesli nie to konczymy gre i ustawiamy stan gry na wygrana gracza ktory ma aktualnie ruch
-    if (piece_counts[1] == 0)
-    {
-        gameState = WHITE_WIN;
-        return "";
-    }
-    if (piece_counts[0] == 0)
-    {
-        gameState = BLACK_WIN;
-        return "";
-    }
-
-    // ponownie pobieramy stan planszy żeby sprawdzić czy pionek zmienił się w damkę
-    retrievedBoard = board.getBoard(); 
-
-    // sprawdzamy czy pionek doszedl do konca planszy, jesli tak to zmieniamy go na damke
-    for (int i = 0; i < 8; i++)
-    {
-        if (retrievedBoard[0][i] == 1)
+        // sprawdzamy czy ruch jest legalny
+        int legal = isMoveLegal(xp, yp, xk, yk, currentMove);
+        if (legal)
         {
-            board.setField(0, i, 3);            
+            // aktualizujemy plansze
+            board.setField(xk, yk, board.getField(xp, yp));
+            board.setField(xp, yp, 0);
+        } else {
+            return "Ruch nie jest legalny";
         }
-        if (retrievedBoard[7][i] == 2)
+
+        // sprawdzamy czy na planszy zostaly pionki przeciwnika, jesli nie to konczymy gre i ustawiamy stan gry na wygrana gracza ktory ma aktualnie ruch
+        if (piece_counts[1] == 0)
         {
-            board.setField(7, i, 4);            
+            gameState = WHITE_WIN;
+            return "";
         }
+        if (piece_counts[0] == 0)
+        {
+            gameState = BLACK_WIN;
+            return "";
+        }
+
+        // ponownie pobieramy stan planszy żeby sprawdzić czy pionek zmienił się w damkę
+        retrievedBoard = board.getBoard(); 
+
+        // sprawdzamy czy pionek doszedl do konca planszy, jesli tak to zmieniamy go na damke
+        for (int i = 0; i < 8; i++)
+        {
+            if (retrievedBoard[0][i] == 1)
+            {
+                board.setField(0, i, 3);            
+            }
+            if (retrievedBoard[7][i] == 2)
+            {
+                board.setField(7, i, 4);            
+            }
+        }
+    }
+    else
+    {
+        Bot bot;
+        std::array<std::array<int, 8>, 8>  botMove = bot.move(currentMove, getBoard());
+        for(int i = 0; i < 8; i++)
+        {
+            for(int j = 0; j < 8; j++)
+            {
+                board.setField(i, j, botMove[i][j]);
+            }
+        }
+
+        // dodac sprawdzenie czy gra sie nie skonczyla!!
     }
 
     // jesli gra sie nie skonczyla to zmieniamy gracza ktory ma aktualnie ruch

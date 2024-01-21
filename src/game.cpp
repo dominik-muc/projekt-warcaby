@@ -31,73 +31,93 @@ void Game::render()
     }
 }
 
-void Game::update()
+Board Game::getGameBoard()
+{
+    return board;
+}
+
+void Game::update(string player)
 {
     std::array<std::array<int, 8>, 8> retrievedBoard = board.getBoard(); // pobieramy aktualny stan planszy
-
-    // pobieramy ruch od gracza
-    int xp, yp, xk, yk;
-    cin >> xp >> yp >> xk >> yk;
-
-    // sprawdzamy czy ruch jest legalny
-    int legal = isMoveLegal(xp, yp, xk, yk, currentMove);
-    if (legal)
+    
+    if(player == "human") // pobieramy ruch od gracza
     {
-        // aktualizujemy plansze
-        board.setField(xk, yk, board.getField(xp, yp));
-        board.setField(xp, yp, 0);
-    } else {
-        cout << "Ruch nie jest legalny" << endl;
-        return;
-    }
-
-    // sprawdzamy czy na planszy zostaly pionki przeciwnika, jesli nie to konczymy gre i ustawiamy stan gry na wygrana gracza ktory ma aktualnie ruch
-    int count = 0;
-    for (int i = 0; i < 8; i++)
-    {
-        for (int j = 0; i < 8; i++)
+        int xp, yp, xk, yk;
+        cin >> xp >> yp >> xk >> yk;
+        // sprawdzamy czy ruch jest legalny
+        int legal = isMoveLegal(xp, yp, xk, yk, currentMove);
+        if (legal)
         {
-            if (retrievedBoard[i][j] == 2 || retrievedBoard[i][j] == 4)
+            // aktualizujemy plansze
+            board.setField(xk, yk, board.getField(xp, yp));
+            board.setField(xp, yp, 0);
+        } else {
+            cout << "Ruch nie jest legalny" << endl;
+            return;
+        }
+
+        // sprawdzamy czy na planszy zostaly pionki przeciwnika, jesli nie to konczymy gre i ustawiamy stan gry na wygrana gracza ktory ma aktualnie ruch
+        int count = 0;
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; i < 8; i++)
             {
-                count++;
+                if (retrievedBoard[i][j] == 2 || retrievedBoard[i][j] == 4)
+                {
+                    count++;
+                }
+            }
+        }
+        if (count == 0)
+        {
+            gameState = WHITE_WIN;
+            return;
+        }
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; i < 8; i++)
+            {
+                if (retrievedBoard[i][j] == 1 || retrievedBoard[i][j] == 3)
+                {
+                    count++;                
+                }
+            }
+        }
+        if (count == 0)
+        {
+            gameState = BLACK_WIN;
+            return;
+        }
+
+        // jeszcze sprawdzamy czy gracz ktory ma aktualnie ruch moze wykonac jakies bicie, jesli nie to zmieniamy gracza ktory ma aktualnie ruch
+        // tu kod...
+
+        // sprawdzamy czy pionek doszedl do konca planszy, jesli tak to zmieniamy go na damke
+        for (int i = 0; i < 8; i++)
+        {
+            if (retrievedBoard[0][i] == 1)
+            {
+                retrievedBoard[0][i] = 3;
+            }
+            if (retrievedBoard[7][i] == 2)
+            {
+                retrievedBoard[7][i] = 4;
             }
         }
     }
-    if (count == 0)
+    else
     {
-        gameState = WHITE_WIN;
-        return;
-    }
-    for (int i = 0; i < 8; i++)
-    {
-        for (int j = 0; i < 8; i++)
+        Bot bot;
+        Board botMove = bot.move(currentMove, getGameBoard());
+        for(int i = 0; i < 8; i++)
         {
-            if (retrievedBoard[i][j] == 1 || retrievedBoard[i][j] == 3)
+            for(int j = 0; j < 8; j++)
             {
-                count++;                
+                board.setField(i, j, botMove.board[i][j]);
             }
         }
-    }
-    if (count == 0)
-    {
-        gameState = BLACK_WIN;
-        return;
-    }
 
-    // jeszcze sprawdzamy czy gracz ktory ma aktualnie ruch moze wykonac jakies bicie, jesli nie to zmieniamy gracza ktory ma aktualnie ruch
-    // tu kod...
-
-    // sprawdzamy czy pionek doszedl do konca planszy, jesli tak to zmieniamy go na damke
-    for (int i = 0; i < 8; i++)
-    {
-        if (retrievedBoard[0][i] == 1)
-        {
-            retrievedBoard[0][i] = 3;
-        }
-        if (retrievedBoard[7][i] == 2)
-        {
-            retrievedBoard[7][i] = 4;
-        }
+        // dodac sprawdzenie czy gra sie nie skonczyla!!
     }
 
     // jesli gra sie nie skonczyla to zmieniamy gracza ktory ma aktualnie ruch

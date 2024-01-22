@@ -158,6 +158,10 @@ int text_renderer(){
         
         message = game.update(UserInput1[0], UserInput1[1], UserInput2[0], UserInput2[1], player);
         renderer.reset_selection();
+        std::ofstream pli("danezegar.txt",std::ios::app);
+        if(pli.is_open())
+            pli << 1 << std::endl;
+        pli.close();
     }
 
     renderer.open_win_screen(game.gameState);
@@ -187,6 +191,10 @@ int ascii_renderer(){
         UserInput2 = renderer.getUserInput();
 
         message = game.update(UserInput1[0], UserInput1[1], UserInput2[0], UserInput2[1], player);
+        std::ofstream pli("danezegar.txt",std::ios::app);
+        if(pli.is_open())
+            pli << 1 << std::endl;
+        pli.close();
     }
 
     renderer.closeRenderer();

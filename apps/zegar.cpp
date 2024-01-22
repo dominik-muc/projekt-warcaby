@@ -59,8 +59,8 @@ int main()
         {
             if(wywolanie=="time")
                 plik >> time;
-            else if(wywolanie=="type")
-                plik >> type;
+            else if(wywolanie=="pvp" || wywolanie=="pve")
+                type=wywolanie;
             else if(wywolanie=="start")
                 start=1;
         }

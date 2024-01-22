@@ -57,7 +57,7 @@ int main(int argc, char** argv){
                 break;
             case str2int("--time"):
                 {
-                std::ofstream plik("danezegar.txt");
+                std::ofstream plik("danezegar.txt",std::ios::app);
                 if(plik.is_open())
                 	plik << "time" << " " << argv[i+1] << std::endl;
                 plik.close();
@@ -72,7 +72,7 @@ int main(int argc, char** argv){
                 break;
             case str2int("--pve"):
             {
-                std::ofstream plik1("danezegar.txt");
+                std::ofstream plik1("danezegar.txt",std::ios::app);
                 if(plik1.is_open())
                 	plik1 << "pve" << std::endl;
                 plik1.close();
@@ -86,7 +86,7 @@ int main(int argc, char** argv){
             }
             case str2int("--pvp"):
             {
-                std::ofstream plik2("danezegar.txt",std::ios::out);
+                std::ofstream plik2("danezegar.txt",std::ios::app);
                 if(plik2.is_open())
                 	plik2 << "pvp" << std::endl;
                 plik2.close();
@@ -139,7 +139,7 @@ int text_renderer(){
     string player;
     string message = "";
 
-    std::ofstream plikk("danezegar.txt");
+    std::ofstream plikk("danezegar.txt",std::ios::app);
     if(plikk.is_open())
         plikk << "start" << std::endl;
     plikk.close();
@@ -173,7 +173,7 @@ int ascii_renderer(){
     array<int, 2> UserInput1, UserInput2;
     string player;
     string message = "";
-    std::ofstream pliki("danezegar.txt",std::ios::out);
+    std::ofstream pliki("danezegar.txt",std::ios::app);
     if(pliki.is_open())
         pliki << "start" << std::endl;
     pliki.close();

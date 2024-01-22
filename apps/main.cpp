@@ -139,6 +139,11 @@ int text_renderer(){
     string player;
     string message = "";
 
+    std::ofstream plikk("danezegar.txt",std::ios::out);
+    if(plikk.is_open())
+        plikk << "start" << std::endl;
+    plikk.close();
+
     renderer.printBoard(game.getBoard());
     renderer.open_help();
 
@@ -168,6 +173,10 @@ int ascii_renderer(){
     array<int, 2> UserInput1, UserInput2;
     string player;
     string message = "";
+    std::ofstream pliki("danezegar.txt",std::ios::out);
+    if(pliki.is_open())
+        pliki << "start" << std::endl;
+    pliki.close();
 
     while(game.gameState == ONGOING){
         renderer.printBoard(game.getBoard());

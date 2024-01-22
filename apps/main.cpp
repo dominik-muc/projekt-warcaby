@@ -55,18 +55,9 @@ int main(int argc, char** argv){
                 set[0] = 1;
                 rtype = TEXT;
                 break;
-            case str2int("--type"):
-                {
-                std::ofstream plik1("danezegar.txt");
-                if(plik1.is_open())
-                	plik1 << "type" << " " << argv[i+1] << std::endl;
-                plik1.close();
-                i++;
-                break;
-                }
             case str2int("--time"):
                 {
-                std::ofstream plik("danezegar.txt");
+                std::ofstream plik("danezegar.txt",std::ios::out);
                 if(plik.is_open())
                 	plik << "time" << " " << argv[i+1] << std::endl;
                 plik.close();
@@ -80,6 +71,11 @@ int main(int argc, char** argv){
                 return 0;
                 break;
             case str2int("--pve"):
+            {
+                std::ofstream plik1("danezegar.txt",std::ios::out);
+                if(plik.is_open())
+                	plik << "pve" << std::endl;
+                plik.close();
                 if(set[1]){
                     flag_set(argv[i]);
                     return -1;
@@ -87,7 +83,13 @@ int main(int argc, char** argv){
                 set[1] = 1;
                 gtype = PVE;
                 break;
+            }
             case str2int("--pvp"):
+            {
+                std::ofstream plik2("danezegar.txt",std::ios::out);
+                if(plik.is_open())
+                	plik << "pvp" << std::endl;
+                plik.close();
                 if(set[1]){
                     flag_set(argv[i]);
                     return -1;
@@ -95,6 +97,7 @@ int main(int argc, char** argv){
                 set[1] = 1;
                 gtype = PVP;
                 break;
+            }
             default:
                 cout << "Niepoprawny argument: " << argv[i] << ". Zobacz --help" << endl;
                 return -1;

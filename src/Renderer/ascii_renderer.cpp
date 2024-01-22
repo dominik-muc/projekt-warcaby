@@ -1,5 +1,5 @@
 #include "Warcaby/Renderer/ascii_renderer.hpp"
-#include <ncurses.h>
+
 
 AsciiRenderer::AsciiRenderer()
 {

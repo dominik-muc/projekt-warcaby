@@ -5,7 +5,8 @@
 #include <queue>
 
 #ifdef _WIN32
-    #include <pdcurses.h>
+    #define NCURSES_MOUSE_VERSION 2
+    #include <curses.h>
 #else
     #include <ncurses.h>
 #endif

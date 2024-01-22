@@ -1,7 +1,8 @@
 #include <iostream>
 #include <Warcaby/Game/game.h>
 #include <Warcaby/types.h>
-
+#include <fstream>
+#include <string>
 #include <Warcaby/Renderer/text_renderer.hpp>
 #include <Warcaby/Renderer/ascii_renderer.hpp>
 #include <Warcaby/Bot/bot.h>

@@ -1,7 +1,7 @@
 #include "Warcaby/Bot/bot.h"
 #include "Warcaby/Game/game.h"
 
-int pieces_diff(Symbol current_move, std::array<std::array<int, 8>, 8> currentBoard)
+int pieces_diff(Symbol current_move, Board currentBoard)
 {
     //pieces_diff() - ocenia bilans bierek na planszy [relatywny]
     
@@ -14,21 +14,31 @@ int pieces_diff(Symbol current_move, std::array<std::array<int, 8>, 8> currentBo
     {
         for(int j = 0; j < 8; j++)
         {
-            if(currentBoard[i][j] == 1) white_pawns++;
-            else if(currentBoard[i][j] == 2) black_pawns++;
-            else if(currentBoard[i][j] == 3) white_kings++;
-            else if(currentBoard[i][j] == 4) black_kings++;
+            if(currentBoard.board[i][j] == 1) white_pawns++;
+            else if(currentBoard.board[i][j] == 2) black_pawns++;
+            else if(currentBoard.board[i][j] == 3) white_kings++;
+            else if(currentBoard.board[i][j] == 4) black_kings++;
         }
     }
 
     int pawn_value = 1;
     int king_value = 2;
+
     int material_balans = (white_pawns - black_pawns) * pawn_value + (white_kings - black_kings) * king_value;
+
+    if(current_move == SYMBOL_WHITE)
+    {
+        return material_balans;
+    }
+    else
+    {
+        return -material_balans;
+    }
 
     return material_balans;
 }
 
-int center_control(Symbol current_move, std::array<std::array<int, 8>, 8> currentBoard)
+int center_control(Symbol current_move, Board currentBoard)
 {
     //center_control() oblicza # figur danego koloru znajdujących się w 8 centralnych polach [nierelatywny]
 
@@ -40,7 +50,7 @@ int center_control(Symbol current_move, std::array<std::array<int, 8>, 8> curren
         {
             for(int j = 2; j <= 5; j++)
             {
-                if(currentBoard[i][j] == 1 || currentBoard[i][j] == 3)
+                if(currentBoard.board[i][j] == 1 || currentBoard.board[i][j] == 3)
                 {
                     center_control++;
                 }
@@ -53,7 +63,7 @@ int center_control(Symbol current_move, std::array<std::array<int, 8>, 8> curren
         {
             for(int j = 2; j <= 5; j++)
             {
-                if(currentBoard[i][j] == 2 || currentBoard[i][j] == 4)
+                if(currentBoard.board[i][j] == 2 || currentBoard.board[i][j] == 4)
                 {
                     center_control++;
                 }
@@ -64,7 +74,7 @@ int center_control(Symbol current_move, std::array<std::array<int, 8>, 8> curren
     return center_control;
 }
 
-int last_line_defense(Symbol current_move, std::array<std::array<int, 8>, 8> currentBoard)
+int last_line_defense(Symbol current_move, Board currentBoard)
 {
     //last_line_defense() oblicza # bronionych pól w ostatniej lini [nierelatywny]
 
@@ -102,7 +112,7 @@ int last_line_defense(Symbol current_move, std::array<std::array<int, 8>, 8> cur
             for(int j = 0; j < 8; j++)
             {
                 // uwzgledniamy ze bialy hetman tez moze bronic ostatniej linii
-                if(currentBoard[7][j] == setups[i][j]  || currentBoard[7][j] == 3)
+                if(currentBoard.board[7][j] == setups[i][j]  || currentBoard.board[7][j] == 3)
                 {
                     cnt++;
                 }
@@ -146,7 +156,7 @@ int last_line_defense(Symbol current_move, std::array<std::array<int, 8>, 8> cur
             for(int j = 0; j < 8; j++)
             {
                 // uwzgledniamy ze czarny hetman tez moze bronic ostatniej linii
-                if(currentBoard[0][j] == setups[i][j] || currentBoard[0][j] == 4)
+                if(currentBoard.board[0][j] == setups[i][j] || currentBoard.board[0][j] == 4)
                 {
                     cnt++;
                 }
@@ -163,7 +173,7 @@ int last_line_defense(Symbol current_move, std::array<std::array<int, 8>, 8> cur
     return last_line;
 }
 
-int uncapturable_pieces(Symbol current_move, std::array<std::array<int, 8>, 8> currentBoard)
+int uncapturable_pieces(Symbol current_move, Board currentBoard)
 {
     // uncapturable_pieces() oblicza # figury znajdujących się na krańcach planszy lub na czele ustawienia w kształcie trójkąta [nierelatywny]
     int uncapturable = 0;
@@ -175,11 +185,11 @@ int uncapturable_pieces(Symbol current_move, std::array<std::array<int, 8>, 8> c
         // w poziomie
         for(int j = 0; j < 8; j++)
         {
-            if(currentBoard[7][j] == 1 || currentBoard[7][j] == 3)
+            if(currentBoard.board[7][j] == 1 || currentBoard.board[7][j] == 3)
             {
                 uncapturable++;
             }
-            if(currentBoard[0][j] == 1 || currentBoard[0][j] == 3)
+            if(currentBoard.board[0][j] == 1 || currentBoard.board[0][j] == 3)
             {
                 uncapturable++;
             }
@@ -188,11 +198,11 @@ int uncapturable_pieces(Symbol current_move, std::array<std::array<int, 8>, 8> c
         // w pionie
         for(int i = 1; i < 7; i++)
         {
-            if(currentBoard[i][0] == 1 || currentBoard[i][0] == 3)
+            if(currentBoard.board[i][0] == 1 || currentBoard.board[i][0] == 3)
             {
                 uncapturable++;
             }
-            if(currentBoard[i][7] == 1 || currentBoard[i][7] == 3)
+            if(currentBoard.board[i][7] == 1 || currentBoard.board[i][7] == 3)
             {
                 uncapturable++;
             }
@@ -203,11 +213,11 @@ int uncapturable_pieces(Symbol current_move, std::array<std::array<int, 8>, 8> c
         // w poziomie
         for(int j = 0; j < 8; j++)
         {
-            if(currentBoard[7][j] == 2 || currentBoard[7][j] == 4)
+            if(currentBoard.board[7][j] == 2 || currentBoard.board[7][j] == 4)
             {
                 uncapturable++;
             }
-            if(currentBoard[0][j] == 2 || currentBoard[0][j] == 4)
+            if(currentBoard.board[0][j] == 2 || currentBoard.board[0][j] == 4)
             {
                 uncapturable++;
             }
@@ -216,11 +226,11 @@ int uncapturable_pieces(Symbol current_move, std::array<std::array<int, 8>, 8> c
         // w pionie
         for(int i = 1; i < 7; i++)
         {
-            if(currentBoard[i][0] == 2 || currentBoard[i][0] == 4)
+            if(currentBoard.board[i][0] == 2 || currentBoard.board[i][0] == 4)
             {
                 uncapturable++;
             }
-            if(currentBoard[i][7] == 2 || currentBoard[i][7] == 4)
+            if(currentBoard.board[i][7] == 2 || currentBoard.board[i][7] == 4)
             {
                 uncapturable++;
             }
@@ -235,11 +245,11 @@ int uncapturable_pieces(Symbol current_move, std::array<std::array<int, 8>, 8> c
         {
             for(int j = 1; j < 7; j++)
             {
-                if(currentBoard[i][j] == 1 || currentBoard[i][j] == 3)
+                if(currentBoard.board[i][j] == 1 || currentBoard.board[i][j] == 3)
                 {
-                    if(currentBoard[i + 1][j + 1] == 1 || currentBoard[i + 1][j + 1] == 3)
+                    if(currentBoard.board[i + 1][j + 1] == 1 || currentBoard.board[i + 1][j + 1] == 3)
                     {
-                        if(currentBoard[i + 1][j - 1] == 1 || currentBoard[i + 1][j - 1] == 1)
+                        if(currentBoard.board[i + 1][j - 1] == 1 || currentBoard.board[i + 1][j - 1] == 1)
                         {
                             uncapturable++;
                         }
@@ -254,11 +264,11 @@ int uncapturable_pieces(Symbol current_move, std::array<std::array<int, 8>, 8> c
         {
             for(int j = 1; j < 7; j++)
             {
-                if(currentBoard[i][j] == 2 || currentBoard[i][j] == 4)
+                if(currentBoard.board[i][j] == 2 || currentBoard.board[i][j] == 4)
                 {
-                    if(currentBoard[i - 1][j + 1] == 2 || currentBoard[i - 1][j + 1] == 4)
+                    if(currentBoard.board[i - 1][j + 1] == 2 || currentBoard.board[i - 1][j + 1] == 4)
                     {
-                        if(currentBoard[i - 1][j - 1] == 2 || currentBoard[i - 1][j - 1] == 4)
+                        if(currentBoard.board[i - 1][j - 1] == 2 || currentBoard.board[i - 1][j - 1] == 4)
                         {
                             uncapturable++;
                         }
@@ -273,7 +283,7 @@ int uncapturable_pieces(Symbol current_move, std::array<std::array<int, 8>, 8> c
 
 
 
-int evaluate(Symbol current_move, std::array<std::array<int, 8>, 8> currentBoard)
+int evaluate(Symbol current_move, Board currentBoard)
 {
     // funkcja evaluate() ocenia pozycję na podstawie jej atrybutów
     // nazwa_parametru [relatywny] - w zestawieniu z przeciwnikiem
@@ -291,12 +301,12 @@ int evaluate(Symbol current_move, std::array<std::array<int, 8>, 8> currentBoard
     //FIGURY KTÓRYCH NIE DA SIĘ ZBIĆ (figury na krańcach planszy lub na czele ustawienia w kształcie trójkąta) [nierelatywny]    
     int uc = uncapturable_pieces(current_move, currentBoard);
     
-    // 0,7 pawn = 4 center square control
-    // 0,55 pawn = 5 uncapturable pieces
-    // 0,5 pawn = 4 last line squares deffened
+    // 1 center square control = 0,2 pawn
+    // 1 uncapturable pieces = 0,1 pawn
+    // 1 last line squares deffened = 0,15 pawn
     int p1, p2, p3, p4;
     p1 = 100;
-    p2 = 17;
+    p2 = 20;
     p3 = 15;
     p4 = 10;
 
@@ -305,7 +315,7 @@ int evaluate(Symbol current_move, std::array<std::array<int, 8>, 8> currentBoard
 }
 
 
-pair < bool, std::array<std::array<int, 8>, 8> >  is_move_legal(int xp, int yp, int xk, int yk, Symbol current_move, std::array<std::array<int, 8>, 8> currentBoard, bool captured_before)
+pair < bool, Board >  is_move_legal(int xp, int yp, int xk, int yk, Symbol current_move, Board currentBoard, bool captured_before)
 {
     //is_move_legal() jest istotnie zmodyfikowaną na potrzeby bota metodą isMoveLegal z klasy Game
 
@@ -318,14 +328,14 @@ pair < bool, std::array<std::array<int, 8>, 8> >  is_move_legal(int xp, int yp, 
     // sprawdzamy czy na polu poczatkowym jest pionek gracza ktory ma aktualnie ruch
     if (current_move == SYMBOL_WHITE)
     {
-        if (!(currentBoard[xp][yp] == 1 || currentBoard[xp][yp] == 3))
+        if (!(currentBoard.board[xp][yp] == 1 || currentBoard.board[xp][yp] == 3))
         {
             return {false, currentBoard};
         }
     }
     else if (current_move == SYMBOL_BLACK)
     {
-        if (!(currentBoard[xp][yp] == 2 || currentBoard[xp][yp] == 4))
+        if (!(currentBoard.board[xp][yp] == 2 || currentBoard.board[xp][yp] == 4))
         {
             return {false, currentBoard};
         }
@@ -342,90 +352,90 @@ pair < bool, std::array<std::array<int, 8>, 8> >  is_move_legal(int xp, int yp, 
     else
     {
         // sprawdzamy czy na polu koncowym jest puste pole
-        if (currentBoard[xk][yk] != 0)
+        if (currentBoard.board[xk][yk] != 0)
         {
             return {false, currentBoard};
         }        
     }
 
-    pair < bool, std::array<std::array<int, 8>, 8> > reaches_xk_yk = {false, currentBoard}; // reaches_xk_yk.first = true, gdy jedno lub wielokrotne bicie prowadzi do pola (xk, yk), wtedy reaches_xk_yk.second jest pozycja po ruchu figurą z pola (xp, yp) na pole (xk, yk)
+    pair < bool, Board > reaches_xk_yk = {false, currentBoard}; // reaches_xk_yk.first = true, gdy jedno lub wielokrotne bicie prowadzi do pola (xk, yk), wtedy reaches_xk_yk.second jest pozycja po ruchu figurą z pola (xp, yp) na pole (xk, yk)
 
     if (current_move == SYMBOL_WHITE)
     {
-        if (currentBoard[xp][yp] == 1)
+        if (currentBoard.board[xp][yp] == 1)
         {
             // sprawdzamy czy mozemy wykonac bicie, tzn czy pomiedzy polem na ktory chcemy przejsc(chcemy przejsc o 2 na ukos), tzn na polu o 1 na ukos jest przeciwnik, wtedy go bijemy
-            if (0 <= (xp - 2) && (yp - 2) >= 0 && currentBoard[xp - 2][yp - 2] == 0 && (currentBoard[xp - 1][yp - 1] == 2 || currentBoard[xp - 1][yp - 1] == 4))
+            if (0 <= (xp - 2) && (yp - 2) >= 0 && currentBoard.board[xp - 2][yp - 2] == 0 && (currentBoard.board[xp - 1][yp - 1] == 2 || currentBoard.board[xp - 1][yp - 1] == 4))
             {
                 // wykonujemy bicie
-                currentBoard[xp][yp] = 0;
-                currentBoard[xp - 1][yp - 1] = 0;
+                currentBoard.board[xp][yp] = 0;
+                currentBoard.board[xp - 1][yp - 1] = 0;
                 if(xp - 2 == 0)
                 {
                     // promocja na damke
-                    currentBoard[xp - 2][yp - 2] = 3; 
+                    currentBoard.board[xp - 2][yp - 2] = 3; 
                 }
                 else
                 {
-                    currentBoard[xp - 2][yp - 2] = 1; 
+                    currentBoard.board[xp - 2][yp - 2] = 1; 
                 }
                 reaches_xk_yk = is_move_legal(xp - 2, yp - 2, xk, yk, current_move, currentBoard, true);
                 if(reaches_xk_yk.first == true) return reaches_xk_yk;
             }
-            else if ((xp - 2) >= 0 && (yp + 2) <= 7 && currentBoard[xp - 2][yp + 2] == 0 && (currentBoard[xp - 1][yp + 1] == 2 || currentBoard[xp - 1][yp + 1] == 4))
+            else if ((xp - 2) >= 0 && (yp + 2) <= 7 && currentBoard.board[xp - 2][yp + 2] == 0 && (currentBoard.board[xp - 1][yp + 1] == 2 || currentBoard.board[xp - 1][yp + 1] == 4))
             {
                 // wykonujemy bicie
-                currentBoard[xp][yp] = 0;
-                currentBoard[xp - 1][yp + 1] = 0;
+                currentBoard.board[xp][yp] = 0;
+                currentBoard.board[xp - 1][yp + 1] = 0;
                 if(xp - 2 == 0)
                 {
                     // promocja na damke
-                    currentBoard[xp - 2][yp + 2] = 3; 
+                    currentBoard.board[xp - 2][yp + 2] = 3; 
                 }
                 else
                 {
-                    currentBoard[xp - 2][yp + 2] = 1; 
+                    currentBoard.board[xp - 2][yp + 2] = 1; 
                 }
                 reaches_xk_yk = is_move_legal(xp - 2, yp + 2, xk, yk, current_move, currentBoard, true);
                 if(reaches_xk_yk.first == true) return reaches_xk_yk;  
             }
         }
-        else if (currentBoard[xp][yp] == 3)
+        else if (currentBoard.board[xp][yp] == 3)
         {
             // sprawdzamy czy mozemy wykonac bicie, tzn czy pomiedzy polem na ktory chcemy przejsc(chcemy przejsc o 2 na ukos), tzn na polu o 1 na ukos jest przeciwnik, wtedy go bijemy
-            if ((xp - 2) >= 0 && (yp - 2) >= 0 && currentBoard[xp - 2][yp - 2] == 0 && (currentBoard[xp - 1][yp - 1] == 2 || currentBoard[xp - 1][yp - 1] == 4))
+            if ((xp - 2) >= 0 && (yp - 2) >= 0 && currentBoard.board[xp - 2][yp - 2] == 0 && (currentBoard.board[xp - 1][yp - 1] == 2 || currentBoard.board[xp - 1][yp - 1] == 4))
             {
                 // wykonujemy bicie
-                currentBoard[xp][yp] = 0;
-                currentBoard[xp - 1][yp - 1] = 0;
-                currentBoard[xp - 2][yp - 2] = 3;
+                currentBoard.board[xp][yp] = 0;
+                currentBoard.board[xp - 1][yp - 1] = 0;
+                currentBoard.board[xp - 2][yp - 2] = 3;
                 reaches_xk_yk = is_move_legal(xp - 2, yp - 2, xk, yk, current_move, currentBoard, true);
                 if(reaches_xk_yk.first == true) return reaches_xk_yk;
             }
-            else if ((xp - 2) >= 0 && (yp + 2) <= 7 && currentBoard[xp - 2][yp + 2] == 0 && (currentBoard[xp - 1][yp + 1] == 2 || currentBoard[xp - 1][yp + 1] == 4))
+            else if ((xp - 2) >= 0 && (yp + 2) <= 7 && currentBoard.board[xp - 2][yp + 2] == 0 && (currentBoard.board[xp - 1][yp + 1] == 2 || currentBoard.board[xp - 1][yp + 1] == 4))
             {
                 // wykonujemy bicie
-                currentBoard[xp][yp] = 0;
-                currentBoard[xp - 1][yp + 1] = 0;
-                currentBoard[xp - 2][yp + 2] = 3; 
+                currentBoard.board[xp][yp] = 0;
+                currentBoard.board[xp - 1][yp + 1] = 0;
+                currentBoard.board[xp - 2][yp + 2] = 3; 
                 reaches_xk_yk = is_move_legal(xp - 2, yp + 2, xk, yk, current_move, currentBoard, true);
                 if(reaches_xk_yk.first == true) return reaches_xk_yk;
             }
-            else if ((xp + 2) <= 7 && (yp - 2) >= 0 && currentBoard[xp + 2][yp - 2] == 0 && (currentBoard[xp + 1][yp - 1] == 2 || currentBoard[xp + 1][yp - 1] == 4))
+            else if ((xp + 2) <= 7 && (yp - 2) >= 0 && currentBoard.board[xp + 2][yp - 2] == 0 && (currentBoard.board[xp + 1][yp - 1] == 2 || currentBoard.board[xp + 1][yp - 1] == 4))
             {
                 // wykonujemy bicie
-                currentBoard[xp][yp] = 0;
-                currentBoard[xp + 1][yp - 1] = 0;
-                currentBoard[xp + 2][yp - 2] = 3; 
+                currentBoard.board[xp][yp] = 0;
+                currentBoard.board[xp + 1][yp - 1] = 0;
+                currentBoard.board[xp + 2][yp - 2] = 3; 
                 reaches_xk_yk = is_move_legal(xp + 2, yp - 2, xk, yk, current_move, currentBoard, true);
                 if(reaches_xk_yk.first == true) return reaches_xk_yk;
             }
-            else if ((xp + 2) <= 7 && (yp + 2) <= 7 && currentBoard[xp + 2][yp + 2] == 0 && (currentBoard[xp + 1][yp + 1] == 2 || currentBoard[xp + 1][yp + 1] == 4))
+            else if ((xp + 2) <= 7 && (yp + 2) <= 7 && currentBoard.board[xp + 2][yp + 2] == 0 && (currentBoard.board[xp + 1][yp + 1] == 2 || currentBoard.board[xp + 1][yp + 1] == 4))
             {
                 // wykonujemy bicie
-                currentBoard[xp][yp] = 0;
-                currentBoard[xp + 1][yp + 1] = 0;
-                currentBoard[xp + 2][yk + 2] = 3; 
+                currentBoard.board[xp][yp] = 0;
+                currentBoard.board[xp + 1][yp + 1] = 0;
+                currentBoard.board[xp + 2][yk + 2] = 3; 
                 reaches_xk_yk = is_move_legal(xp + 2, yp + 2, xk, yk, current_move, currentBoard, true);
                 if(reaches_xk_yk.first == true) return reaches_xk_yk;
             }      
@@ -433,78 +443,78 @@ pair < bool, std::array<std::array<int, 8>, 8> >  is_move_legal(int xp, int yp, 
     }
     else if (current_move == SYMBOL_BLACK)
     {
-        if(currentBoard[xp][yp] == 2)
+        if(currentBoard.board[xp][yp] == 2)
         {
             // sprawdzamy czy mozemy wykonac bicie, tzn czy pomiedzy polem na ktory chcemy przejsc(chcemy przejsc o 2 na ukos), tzn na polu o 1 na ukos jest przeciwnik, wtedy go bijemy
-            if ((xp + 2) <= 7 && (yp - 2) >= 0 && currentBoard[xp + 2][yp - 2] == 0 && (currentBoard[xp + 1][yp - 1] == 1 || currentBoard[xp + 1][yp - 1] == 3))
+            if ((xp + 2) <= 7 && (yp - 2) >= 0 && currentBoard.board[xp + 2][yp - 2] == 0 && (currentBoard.board[xp + 1][yp - 1] == 1 || currentBoard.board[xp + 1][yp - 1] == 3))
             {
                 // wykonujemy bicie
-                currentBoard[xp][yp] = 0;
-                currentBoard[xp + 1][yp - 1] = 0;
+                currentBoard.board[xp][yp] = 0;
+                currentBoard.board[xp + 1][yp - 1] = 0;
                 if(xp + 2 == 7)
                 {
-                    currentBoard[xp + 2][yp - 2] = 4; 
+                    currentBoard.board[xp + 2][yp - 2] = 4; 
                 }
                 else
                 {
-                    currentBoard[xp + 2][yp - 2] = 2; 
+                    currentBoard.board[xp + 2][yp - 2] = 2; 
                 }
                 reaches_xk_yk = is_move_legal(xp + 2, yp - 2, xk, yk, current_move, currentBoard, true);
                 if(reaches_xk_yk.first == true) return reaches_xk_yk;
             }
-            else if ((xp + 2) <= 7 && (yp + 2) <= 7 && currentBoard[xp + 2][yp + 2] == 0 && (currentBoard[xp + 1][yp + 1] == 1 || currentBoard[xp + 1][yp + 1] == 3))
+            else if ((xp + 2) <= 7 && (yp + 2) <= 7 && currentBoard.board[xp + 2][yp + 2] == 0 && (currentBoard.board[xp + 1][yp + 1] == 1 || currentBoard.board[xp + 1][yp + 1] == 3))
             {
                 // wykonujemy bicie
-                currentBoard[xp][yp] = 0;
-                currentBoard[xp + 1][yp + 1] = 0;
+                currentBoard.board[xp][yp] = 0;
+                currentBoard.board[xp + 1][yp + 1] = 0;
                 if(xp + 2 == 7)
                 {
-                    currentBoard[xp + 2][yp + 2] = 4; 
+                    currentBoard.board[xp + 2][yp + 2] = 4; 
                 }
                 else
                 {
-                    currentBoard[xp + 2][yp + 2] = 2; 
+                    currentBoard.board[xp + 2][yp + 2] = 2; 
                 }
                 reaches_xk_yk = is_move_legal(xp + 2, yp + 2, xk, yk, current_move, currentBoard, true);
                 if(reaches_xk_yk.first == true) return reaches_xk_yk;
             }
         }
-        else if (currentBoard[xp][yp] == 4)
+        else if (currentBoard.board[xp][yp] == 4)
         {
             // sprawdzamy czy mozemy wykonac bicie, tzn czy pomiedzy polem na ktory chcemy przejsc(chcemy przejsc o 2 na ukos), tzn na polu o 1 na ukos jest przeciwnik, wtedy go bijemy
-            if ((xp - 2) >= 0 && (yp - 2) >= 0 && currentBoard[xp - 2][yp - 2] == 0 && (currentBoard[xp - 1][yp - 1] == 1 || currentBoard[xp - 1][yp - 1] == 3))
+            if ((xp - 2) >= 0 && (yp - 2) >= 0 && currentBoard.board[xp - 2][yp - 2] == 0 && (currentBoard.board[xp - 1][yp - 1] == 1 || currentBoard.board[xp - 1][yp - 1] == 3))
             {
                 // wykonujemy bicie
-                currentBoard[xp][yp] = 0;
-                currentBoard[xp - 1][yp - 1] = 0;
-                currentBoard[xp - 2][yp - 2] = 4;
+                currentBoard.board[xp][yp] = 0;
+                currentBoard.board[xp - 1][yp - 1] = 0;
+                currentBoard.board[xp - 2][yp - 2] = 4;
                 reaches_xk_yk = is_move_legal(xp + 2, yp + 2, xk, yk, current_move, currentBoard, true);
                 if(reaches_xk_yk.first == true) return reaches_xk_yk;
             }
-            else if ((xp - 2) >= 0 && (yp + 2) <= 7 && currentBoard[xp - 2][yp + 2] == 0 && (currentBoard[xp - 1][yp + 1] == 1 || currentBoard[xp - 1][yp + 1] == 3))
+            else if ((xp - 2) >= 0 && (yp + 2) <= 7 && currentBoard.board[xp - 2][yp + 2] == 0 && (currentBoard.board[xp - 1][yp + 1] == 1 || currentBoard.board[xp - 1][yp + 1] == 3))
             {
                 // wykonujemy bicie
-                currentBoard[xp][yp] = 0;
-                currentBoard[xp - 1][yp + 1] = 0;
-                currentBoard[xp - 2][yp + 2] = 4;
+                currentBoard.board[xp][yp] = 0;
+                currentBoard.board[xp - 1][yp + 1] = 0;
+                currentBoard.board[xp - 2][yp + 2] = 4;
                 reaches_xk_yk = is_move_legal(xp + 2, yp + 2, xk, yk, current_move, currentBoard, true);
                 if(reaches_xk_yk.first == true) return reaches_xk_yk;
             }
-            else if ((xp + 2) <= 7 && (yp - 2) >= 0 && currentBoard[xp + 2][yp - 2] == 0 && (currentBoard[xp + 1][yp - 1] == 1 || currentBoard[xp + 1][yp - 1] == 3))
+            else if ((xp + 2) <= 7 && (yp - 2) >= 0 && currentBoard.board[xp + 2][yp - 2] == 0 && (currentBoard.board[xp + 1][yp - 1] == 1 || currentBoard.board[xp + 1][yp - 1] == 3))
             {
                 // wykonujemy bicie
-                currentBoard[xp][yp] = 0;
-                currentBoard[xp + 1][yp - 1] = 0;
-                currentBoard[xp + 2][yp - 2] = 4;
+                currentBoard.board[xp][yp] = 0;
+                currentBoard.board[xp + 1][yp - 1] = 0;
+                currentBoard.board[xp + 2][yp - 2] = 4;
                 reaches_xk_yk = is_move_legal(xp + 2, yp + 2, xk, yk, current_move, currentBoard, true);
                 if(reaches_xk_yk.first == true) return reaches_xk_yk;
             }
-            else if ((xp + 2) <= 7 && (yp + 2) <= 7 && currentBoard[xp + 2][yp + 2] == 0 && (currentBoard[xp + 1][yp + 1] == 1 || currentBoard[xp + 1][yp + 1] == 3))
+            else if ((xp + 2) <= 7 && (yp + 2) <= 7 && currentBoard.board[xp + 2][yp + 2] == 0 && (currentBoard.board[xp + 1][yp + 1] == 1 || currentBoard.board[xp + 1][yp + 1] == 3))
             {
                 // wykonujemy bicie
-                currentBoard[xp][yp] = 0;
-                currentBoard[xp + 1][yp + 1] = 0;
-                currentBoard[xp + 2][yp + 2] = 4;
+                currentBoard.board[xp][yp] = 0;
+                currentBoard.board[xp + 1][yp + 1] = 0;
+                currentBoard.board[xp + 2][yp + 2] = 4;
                 reaches_xk_yk = is_move_legal(xp + 2, yp + 2, xk, yk, current_move, currentBoard, true);
                 if(reaches_xk_yk.first == true) return reaches_xk_yk;
             }      
@@ -515,7 +525,6 @@ pair < bool, std::array<std::array<int, 8>, 8> >  is_move_legal(int xp, int yp, 
     {
         // nie ma mozliwego bicia figurą z (xp, yp)
         
-
         //sprawdzamy czy sa jakies bicia przymusowe pozostalymi figurami koloru figury z (xp, yp)
 
         if(current_move == SYMBOL_WHITE)
@@ -527,32 +536,32 @@ pair < bool, std::array<std::array<int, 8>, 8> >  is_move_legal(int xp, int yp, 
                     if(i != xp || j != yp)
                     {
                         // wybralismy dowolna figure poza figura z pola (xp, yp)
-                        if (currentBoard[i][j] == 1)
+                        if (currentBoard.board[i][j] == 1)
                         {
-                            if ((i - 2) >= 0 && (j - 2) >= 0 && currentBoard[i - 2][j - 2] == 0 && (currentBoard[i - 1][j - 1] == 2 || currentBoard[i - 1][j - 1] == 4))
+                            if ((i - 2) >= 0 && (j - 2) >= 0 && currentBoard.board[i - 2][j - 2] == 0 && (currentBoard.board[i - 1][j - 1] == 2 || currentBoard.board[i - 1][j - 1] == 4))
                             {
                                 return {false, currentBoard};
                             }
-                            else if ((i - 2) >= 0 && (j + 2) <= 7 && currentBoard[i - 2][j + 2] == 0 && (currentBoard[i - 1][j + 1] == 2 || currentBoard[i - 1][j + 1] == 4))
+                            else if ((i - 2) >= 0 && (j + 2) <= 7 && currentBoard.board[i - 2][j + 2] == 0 && (currentBoard.board[i - 1][j + 1] == 2 || currentBoard.board[i - 1][j + 1] == 4))
                             {
                                 return {false, currentBoard};
                             }
                         }
-                        else if (currentBoard[i][j] == 3)
+                        else if (currentBoard.board[i][j] == 3)
                         {
-                            if ((i - 2) >= 0 && (j - 2) >= 0 && currentBoard[i - 2][j - 2] == 0 && (currentBoard[i - 1][j - 1] == 2 || currentBoard[i - 1][j - 1] == 4))
+                            if ((i - 2) >= 0 && (j - 2) >= 0 && currentBoard.board[i - 2][j - 2] == 0 && (currentBoard.board[i - 1][j - 1] == 2 || currentBoard.board[i - 1][j - 1] == 4))
                             {
                                 return {false, currentBoard};
                             }
-                            else if ((i - 2) >= 0 && (j + 2) <= 7 && currentBoard[i - 2][j + 2] == 0 && (currentBoard[i - 1][j + 1] == 2 || currentBoard[i - 1][j + 1] == 4))
+                            else if ((i - 2) >= 0 && (j + 2) <= 7 && currentBoard.board[i - 2][j + 2] == 0 && (currentBoard.board[i - 1][j + 1] == 2 || currentBoard.board[i - 1][j + 1] == 4))
                             {
                                 return {false, currentBoard};
                             }
-                            else if ((i + 2) <= 7 && (j - 2) >= 0 && currentBoard[i + 2][j - 2] == 0 && (currentBoard[i + 1][j - 1] == 2 || currentBoard[i + 1][j - 1] == 4))
+                            else if ((i + 2) <= 7 && (j - 2) >= 0 && currentBoard.board[i + 2][j - 2] == 0 && (currentBoard.board[i + 1][j - 1] == 2 || currentBoard.board[i + 1][j - 1] == 4))
                             {
                                 return {false, currentBoard};
                             }
-                            else if ((i + 2) <= 7 && (j + 2) <= 7 && currentBoard[i + 2][j + 2] == 0 && (currentBoard[i + 1][j + 1] == 2 || currentBoard[i + 1][j + 1] == 4))
+                            else if ((i + 2) <= 7 && (j + 2) <= 7 && currentBoard.board[i + 2][j + 2] == 0 && (currentBoard.board[i + 1][j + 1] == 2 || currentBoard.board[i + 1][j + 1] == 4))
                             {
                                 return {false, currentBoard};
                             }      
@@ -570,33 +579,33 @@ pair < bool, std::array<std::array<int, 8>, 8> >  is_move_legal(int xp, int yp, 
                     if(i != xp || j != yp)
                     {
                         // wybralismy dowolna figure poza figura z pola (xp, yp)
-                        if(currentBoard[i][j] == 2)
+                        if(currentBoard.board[i][j] == 2)
                         {
-                            if ((i + 2) <= 7 && (j - 2) >= 0 && currentBoard[i + 2][j - 2] == 0 && (currentBoard[i + 1][j - 1] == 1 || currentBoard[i + 1][j - 1] == 3))
+                            if ((i + 2) <= 7 && (j - 2) >= 0 && currentBoard.board[i + 2][j - 2] == 0 && (currentBoard.board[i + 1][j - 1] == 1 || currentBoard.board[i + 1][j - 1] == 3))
                             {
                                 return {false, currentBoard};
                             }
-                            else if ((i + 2) <= 7 && (j + 2) <= 7 && currentBoard[i + 2][j + 2] == 0 && (currentBoard[i + 1][j + 1] == 1 || currentBoard[i + 1][j + 1] == 3))
+                            else if ((i + 2) <= 7 && (j + 2) <= 7 && currentBoard.board[i + 2][j + 2] == 0 && (currentBoard.board[i + 1][j + 1] == 1 || currentBoard.board[i + 1][j + 1] == 3))
                             {
                                 return {false, currentBoard};
                             }
                         }
-                        else if (currentBoard[i][j] == 4)
+                        else if (currentBoard.board[i][j] == 4)
                         {
                             // sprawdzamy czy mozemy wykonac bicie, tzn czy pomiedzy polem na ktory chcemy przejsc(chcemy przejsc o 2 na ukos), tzn na polu o 1 na ukos jest przeciwnik, wtedy go bijemy
-                            if ((i - 2) >= 0 && (j - 2) >= 0 && currentBoard[i - 2][j - 2] == 0 && (currentBoard[i - 1][j - 1] == 1 || currentBoard[i - 1][j - 1] == 3))
+                            if ((i - 2) >= 0 && (j - 2) >= 0 && currentBoard.board[i - 2][j - 2] == 0 && (currentBoard.board[i - 1][j - 1] == 1 || currentBoard.board[i - 1][j - 1] == 3))
                             {
                                 return {false, currentBoard};
                             }
-                            else if ((i - 2) >= 0 && (j + 2) <= 7 && currentBoard[i - 2][j + 2] == 0 && (currentBoard[i - 1][j + 1] == 1 || currentBoard[i - 1][j + 1] == 3))
+                            else if ((i - 2) >= 0 && (j + 2) <= 7 && currentBoard.board[i - 2][j + 2] == 0 && (currentBoard.board[i - 1][j + 1] == 1 || currentBoard.board[i - 1][j + 1] == 3))
                             {
                                 return {false, currentBoard};
                             }
-                            else if ((i + 2) <= 7 && (j - 2) >= 0 && currentBoard[i + 2][j - 2] == 0 && (currentBoard[i + 1][j - 1] == 1 || currentBoard[i + 1][j - 1] == 3))
+                            else if ((i + 2) <= 7 && (j - 2) >= 0 && currentBoard.board[i + 2][j - 2] == 0 && (currentBoard.board[i + 1][j - 1] == 1 || currentBoard.board[i + 1][j - 1] == 3))
                             {
                                 return {false, currentBoard};
                             }
-                            else if ((i + 2) <= 7 && (j + 2) <= 7 && currentBoard[i + 2][j + 2] == 0 && (currentBoard[i + 1][j + 1] == 1 || currentBoard[i + 1][j + 1] == 3))
+                            else if ((i + 2) <= 7 && (j + 2) <= 7 && currentBoard.board[i + 2][j + 2] == 0 && (currentBoard.board[i + 1][j + 1] == 1 || currentBoard.board[i + 1][j + 1] == 3))
                             {
                                 return {false, currentBoard};
                             }
@@ -610,56 +619,56 @@ pair < bool, std::array<std::array<int, 8>, 8> >  is_move_legal(int xp, int yp, 
         //sprawdzamy czy mozna przejsc o 1 pole na skos figurą (xp, yp) na pole (xk, yk)
         if (current_move == SYMBOL_WHITE)
         {
-            if (currentBoard[xp][yp] == 1)
+            if (currentBoard.board[xp][yp] == 1)
             {            
                 if (xk == xp - 1 && (yk == yp - 1 || yk == yp + 1))
                 {
-                    currentBoard[xp][yp] = 0;
+                    currentBoard.board[xp][yp] = 0;
                     if(xk == 0)
                     {
-                        currentBoard[xk][yk] = 3; 
+                        currentBoard.board[xk][yk] = 3; 
                     }
                     else
                     {
-                        currentBoard[xk][yk] = 1; 
+                        currentBoard.board[xk][yk] = 1; 
                     }
                     return {true, currentBoard};
                 }
             }
-            else if(currentBoard[xp][yp] == 3)
+            else if(currentBoard.board[xp][yp] == 3)
             {
                 if ((xk == xp + 1 || xk == xp - 1 ) && (yk == yp - 1 || yk == yp + 1))
                 {
-                    currentBoard[xp][yp] = 0;
-                    currentBoard[xk][yk] = 3;
+                    currentBoard.board[xp][yp] = 0;
+                    currentBoard.board[xk][yk] = 3;
                     return {true, currentBoard};
                 }
             }
         }
         else if (current_move == SYMBOL_BLACK)
         {
-            if (currentBoard[xp][yp] == 2)
+            if (currentBoard.board[xp][yp] == 2)
             {
                 if (xk == xp + 1 && (yk == yp - 1 || yk == yp + 1))
                 {
-                    currentBoard[xp][yp] = 0;
+                    currentBoard.board[xp][yp] = 0;
                     if(xk == 7)
                     {
-                        currentBoard[xk][yk] = 4; 
+                        currentBoard.board[xk][yk] = 4; 
                     }
                     else
                     {
-                        currentBoard[xk][yk] = 2; 
+                        currentBoard.board[xk][yk] = 2; 
                     }
                     return {true, currentBoard};
                 }
             }
-            else if(currentBoard[xp][yp] == 4)
+            else if(currentBoard.board[xp][yp] == 4)
             {
                 if ((xk == xp + 1 || xk == xp - 1 ) && (yk == yp - 1 || yk == yp + 1))
                 {
-                    currentBoard[xp][yp] = 0;
-                    currentBoard[xk][yk] = 4; 
+                    currentBoard.board[xp][yp] = 0;
+                    currentBoard.board[xk][yk] = 4; 
                     return {true, currentBoard};
                 }                    
             }
@@ -671,10 +680,10 @@ pair < bool, std::array<std::array<int, 8>, 8> >  is_move_legal(int xp, int yp, 
     return {false, currentBoard};
 }
 
-vector < std::array<std::array<int, 8>, 8> > legal_moves_generator(Symbol current_move, std::array<std::array<int, 8>, 8> currentBoard)
+vector < Board > legal_moves_generator(Symbol current_move, Board currentBoard)
 {
     // legal_moves_generator() generuje wszystkie prawidłowe posuniecie w pozycji dla gracza o danym current_moveu
-    vector < std::array<std::array<int, 8>, 8> > moves;
+    vector < Board > moves;
 
     for(int xp = 0; xp < 8; xp++)
     {
@@ -684,7 +693,7 @@ vector < std::array<std::array<int, 8>, 8> > legal_moves_generator(Symbol curren
             {
                 for(int yk = 0; yk < 8; yk++)
                 {
-                    pair < bool, std::array<std::array<int, 8>, 8> > potenialMove = is_move_legal(xp, yp, xk, yk, current_move, currentBoard, false);
+                    pair < bool, Board > potenialMove = is_move_legal(xp, yp, xk, yk, current_move, currentBoard, false);
                     if(potenialMove.first == true)
                     {
                         // potencjalny ruch okazal sie poprawny
@@ -698,7 +707,7 @@ vector < std::array<std::array<int, 8>, 8> > legal_moves_generator(Symbol curren
     return moves;
 }
 
-int min_max(int depth, Symbol current_move, bool isMaximizing, std::array<std::array<int, 8>, 8> currentBoard)
+int min_max(int depth, Symbol current_move, bool isMaximizing, Board currentBoard)
 {
     if(depth == 6)
     {
@@ -707,11 +716,11 @@ int min_max(int depth, Symbol current_move, bool isMaximizing, std::array<std::a
     }
 
     // generacja wszystkich legalnych ruchów pozycji
-    vector < std::array<std::array<int, 8>, 8> > moves = legal_moves_generator(current_move, currentBoard);
+    vector < Board > moves = legal_moves_generator(current_move, currentBoard);
     int best_value;
     int value;
 
-    if(moves.size() == 0) // do rozkminienia
+    if(moves.size() == 0)
     {
         // brak ruchow w pozycji
         if(isMaximizing == true)
@@ -767,13 +776,13 @@ int min_max(int depth, Symbol current_move, bool isMaximizing, std::array<std::a
     }
 }
 
-std::array<std::array<int, 8>, 8> Bot::move(Symbol current_move, std::array<std::array<int, 8>, 8> currentBoard)
+Board Bot::move(Symbol current_move, Board currentBoard)
 {
     int value;
     int best_value = -INF;
-    std::array<std::array<int, 8>, 8> best_position;
+    Board best_position;
 
-    vector < std::array<std::array<int, 8>, 8> > moves = legal_moves_generator(current_move, currentBoard);
+    vector < Board > moves = legal_moves_generator(current_move, currentBoard);
     
     for(unsigned int i = 0; i < moves.size(); i++)
     {
@@ -785,7 +794,7 @@ std::array<std::array<int, 8>, 8> Bot::move(Symbol current_move, std::array<std:
         {
             value = min_max(1, SYMBOL_WHITE, false, moves[i]);
         }
-        if(value > best_value)
+        if(value >= best_value)
         {
             best_value = value;
             best_position = moves[i];

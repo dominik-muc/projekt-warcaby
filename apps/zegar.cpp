@@ -3,7 +3,7 @@
 #include <fstream>
 #include <string>
 #include <thread>
-
+#include <Warcaby/zegar.h>
 
 
 void wypisz_czasy(std::string typ,int bialy,int czarny)
@@ -42,7 +42,22 @@ void wypisz_czasy(std::string typ,int bialy,int czarny)
     }
 }
 
-
+void do_pliku(const char *arg1,const char *arg2)
+{
+    std::string wywolanie(arg1),wartosc(arg2);
+    std::ofstream plik("danezegar.txt");
+    if(plik.is_open())
+    {
+        if(wywolanie!="start")
+	{
+		wywolanie=wywolanie.substr(2);
+		plik << wywolanie << " " << wartosc << std::endl;
+	}
+        else if(wywolanie=="start")
+            plik << "start" << std::endl;
+    }
+    plik.close();
+}
 
 
 int main()

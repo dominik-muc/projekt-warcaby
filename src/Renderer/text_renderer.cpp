@@ -199,7 +199,7 @@ void TextRenderer::open_help(){
     #endif
 
     wattron(help_win, A_BLINK|A_BOLD);
-    mvwaddstr(help_win, 24, 33, "<PRESS ANY BUTTON TO CLOSE>");
+    mvwaddstr(help_win, 27, 33, "<PRESS 'h' TO CLOSE>");
     wattroff(help_win, A_BLINK|A_BLINK);
 
     #ifdef A_ITALIC

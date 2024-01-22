@@ -70,9 +70,11 @@ int main(int argc, char** argv){
                 i++;
                 break;
             case str2int("--help"):
+                break;
             case str2int("-h"):
                 show_help();
                 return 0;
+                break;
             case str2int("--pve"):
                 if(set[1]){
                     flag_set(argv[i]);

@@ -136,7 +136,8 @@ int text_renderer(){
     Game game;
     TextRenderer renderer;
     array<int, 2> UserInput1, UserInput2;
-    string player,last=="Bialy";
+    string player;
+    string last=="Bialy";
     string message = "";
 
     std::ofstream plikk("danezegar.txt",std::ios::app);
@@ -176,7 +177,8 @@ int ascii_renderer(){
     AsciiRenderer renderer;
 
     array<int, 2> UserInput1, UserInput2;
-    string player,last=="Bialy";
+    string player;
+    string last=="Bialy";
     string message = "";
     std::ofstream pliki("danezegar.txt",std::ios::app);
     if(pliki.is_open())

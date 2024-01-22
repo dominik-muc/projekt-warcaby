@@ -1,8 +1,10 @@
 #include "Warcaby/Renderer/text_renderer.hpp"
 
+
 #ifdef PDCURSES
     #include <windows.h>
 #endif
+
 
 
 TextRenderer::TextRenderer()

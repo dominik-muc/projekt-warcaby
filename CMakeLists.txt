@@ -10,10 +10,11 @@ project(
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
 find_package (PDCurses)
+message("---------------------------- ${PDCURSES_FOUND}, ${PDCURSES_LIBRARIES}, ${PDCURSES_INCLUDE_DIR}, ${PDCURSES_PANEL_LIBRARY}")
 if(PDCURSES_FOUND)
     set(CURSES_FOUND ${PDCURSES_FOUND})
     set(CURSES_LIBRARIES ${PDCURSES_LIBRARY})
-    set(CURSES_INCLUDE_DIRS ${PDCURSES_INCLUDE_DIR})
+    set(CURSES_INCLUDE_DIR ${PDCURSES_INCLUDE_DIR})
 else()
     find_package (Curses REQUIRED)
 endif()

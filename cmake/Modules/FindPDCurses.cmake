@@ -1,18 +1,18 @@
 find_path(PDCURSES_INCLUDE_DIR curses.h
     HINTS
-    $ENV{PDCURSESDIR}
+    $ENV{PDCURSESDIR} "${PROJECT_SOURCE_DIR}/include/PDCurses"
     PATH_SUFFIXES include/pdcurses include)
 
 find_library(PDCURSES_LIBRARY
     names pdcurses
     HINTS
-    $ENV{PDCURSESDIR}
+    $ENV{PDCURSESDIR} "${PROJECT_SOURCE_DIR}/include/PDCurses"
     PATH_SUFFIXES lib64 lib)
 
 find_library(PDCURSES_PANEL_LIBRARY
     names panel
     HINTS
-    $ENV{PDCURSESDIR}
+    $ENV{PDCURSESDIR} "${PROJECT_SOURCE_DIR}/include/PDCurses"
     PATH_SUFFIXES lib64 lib)
 
 if(PDCURSES_LIBRARY)

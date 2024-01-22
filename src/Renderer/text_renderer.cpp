@@ -1,5 +1,4 @@
 #include "Warcaby/Renderer/text_renderer.hpp"
-#include <ncurses.h>
 
 
 TextRenderer::TextRenderer()

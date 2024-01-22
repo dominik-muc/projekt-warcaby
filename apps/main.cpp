@@ -55,11 +55,25 @@ int main(int argc, char** argv){
                 rtype = TEXT;
                 break;
             case str2int("--type"):
-                do_pliku(argv[i],argv[i+1]);
+                std::string wartosc(arg2);
+                std::ofstream plik("danezegar.txt");
+                if(plik.is_open())
+                {
+		            wywolanie=wywolanie.substr(2);
+		            plik << "type" << " " << wartosc << std::endl;
+	            }
+                plik.close();
                 i++;
                 break;
             case str2int("--time"):
-                do_pliku(argv[i],argv[i+1]);
+                std::string wartosc(arg2);
+                std::ofstream plik("danezegar.txt");
+                if(plik.is_open())
+                {
+		            wywolanie=wywolanie.substr(2);
+		            plik << "time" << " " << wartosc << std::endl;
+	            }
+                plik.close();
                 i++;
                 break;
             case str2int("--help"):

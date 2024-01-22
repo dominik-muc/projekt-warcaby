@@ -5,7 +5,7 @@
 #include <thread>
 
 
-int row;
+
 void wypisz_czasy(std::string typ,int bialy,int czarny)
 {
     std::cout << "\e[0;10H";
@@ -51,7 +51,7 @@ int main()
     std::string type,wywolanie;
     int time=180, start=0;
     if (!plik.is_open())
-        std::cerr << "Nie mo¿na otworzyc pliku." << std::endl;
+        std::cerr << "Nie można otworzyc pliku." << std::endl;
 
     while(start==0)
     {
@@ -71,7 +71,7 @@ int main()
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(600));
     }
-	std::cout << "\e[2J\e[H";
+    std::cout << "\e[2J\e[H";
     int bialy=time*10,czarny=0;
     if(type=="pvp")
         czarny=time*10;
@@ -113,10 +113,11 @@ int main()
             czarny--;
     }
     if(bialy==0)
-        printf("\n\n\n\nBIA£Y PRZEGRYWA PRZEZ KONIEC CZASU\n");
+        //tutaj przegrywa bialy
     else if(czarny==0 && type!="pvp")
-        printf("\n\n\n\nCZARNY PRZEGRYWA PRZEZ KONIEC CZASU\n");
+        //tutaj przegrywa czarny 
     plik.close();
+    //wyczyszczenie pliku danezegar
     std::ofstream plik1("danezegar.txt", std::ios::trunc);
     plik1.close();
 

@@ -218,9 +218,4 @@ int bot_text(){
     renderer.closeRenderer();
     cout << "Wygral gracz: " << (game.currentMove == SYMBOL_WHITE ? "Bialy" : "Czarny") << endl;
     return 0;
-
-    // wypisujemy kto wygral
-    cout << "Wygral gracz: " << game.gameState << endl;
-    
-    return 0;
 }

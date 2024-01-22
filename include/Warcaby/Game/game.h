@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Warcaby/Board/board.h>
-#include <Warcaby/Player/player.h>
 #include <string>
 #include <Warcaby/Bot/bot.h>
 

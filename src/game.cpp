@@ -89,8 +89,6 @@ std::string Game::update(int xp, int yp, int xk, int yk, string player)
                 board.setField(i, j, botMove[i][j]);
             }
         }
-
-        // dodac sprawdzenie czy gra sie nie skonczyla!!
     }
 
     // jesli gra sie nie skonczyla to zmieniamy gracza ktory ma aktualnie ruch

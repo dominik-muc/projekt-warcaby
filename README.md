@@ -27,6 +27,31 @@ Gdy pionek dojdzie do końca planszy, to zamienia się w damkę.
 Damki mogą poruszać się oraz bić zarówno do przodu, jak i do tyłu.  
 Bicie jest przymusowe.
 
+## Bot
+
+Bot opiera się o algorytm minimax z ewaluacją pozycji przeważnie po 5. ruchu (czasami gra kończy się zanim algorytm zejdzie na głębokość 5 ruchów, wtedy ewaluacja ma miejsce wcześniej). Warto zauważyć, że wielokrotne bicie liczone jest jako 1 ruch.
+
+Do ewaluacji służą 4 parametry, 1 relatywny (w zestawieniu z przeciwnikiem), 3 nierealtywne (bez zestawienia z przeciwnikiem). Są to odpowiednio:
+* bilans materiału
+* konrola centrum, kontrola ostatniej linii, bierki niezbijalne
+
+### Bilans materiału
+
+Różnica między ilość i wartością białych i czarnych bierek (lub czarnych i białych bierek)
+
+### Kontrola centrum
+
+Ilość bierek danego koloru na 4 centralnych polach planszy.
+
+### Kontrola ostatniej linii
+
+Ilość bronionych pól na ostatniej linii. Przykładowo jeśli żaden z białych pionków z ostatniego rzędu nie wykonał ruchu (czyli 4 ostatnie pola są bronione) to gracz grający czarnymi nie będzie mógł dorobić damki.
+
+### Bierki niezbijalne
+
+Ilość bierek na krańcach planszy, lub na czele trójkątnego ustawienia (takich bierek nie można zbić w 1 ruchu).
+
+
 ## Autorzy projektu
 - Dominik Muc
 - Kaja Matuszewska

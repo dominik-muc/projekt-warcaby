@@ -23,8 +23,18 @@ int pieces_diff(Symbol current_move, std::array<std::array<int, 8>, 8> currentBo
 
     int pawn_value = 1;
     int king_value = 2;
+
     int material_balans = (white_pawns - black_pawns) * pawn_value + (white_kings - black_kings) * king_value;
 
+    if(current_move == SYMBOL_WHITE)
+    {
+        return material_balans;
+    }
+    else
+    {
+        return -material_balans;
+    }
+    
     return material_balans;
 }
 
@@ -272,7 +282,6 @@ int uncapturable_pieces(Symbol current_move, std::array<std::array<int, 8>, 8> c
 }
 
 
-
 int evaluate(Symbol current_move, std::array<std::array<int, 8>, 8> currentBoard)
 {
     // funkcja evaluate() ocenia pozycję na podstawie jej atrybutów
@@ -291,12 +300,12 @@ int evaluate(Symbol current_move, std::array<std::array<int, 8>, 8> currentBoard
     //FIGURY KTÓRYCH NIE DA SIĘ ZBIĆ (figury na krańcach planszy lub na czele ustawienia w kształcie trójkąta) [nierelatywny]    
     int uc = uncapturable_pieces(current_move, currentBoard);
     
-    // 0,7 pawn = 4 center square control
-    // 0,55 pawn = 5 uncapturable pieces
-    // 0,5 pawn = 4 last line squares deffened
+    // 1 center square control = 0,2 pawn
+    // 1 uncapturable pieces = 0,1 pawn
+    // 1 last line squares deffened = 0,15 pawn
     int p1, p2, p3, p4;
     p1 = 100;
-    p2 = 17;
+    p2 = 20;
     p3 = 15;
     p4 = 10;
 
@@ -785,7 +794,7 @@ std::array<std::array<int, 8>, 8> Bot::move(Symbol current_move, std::array<std:
         {
             value = min_max(1, SYMBOL_WHITE, false, moves[i]);
         }
-        if(value > best_value)
+        if(value >= best_value)
         {
             best_value = value;
             best_position = moves[i];

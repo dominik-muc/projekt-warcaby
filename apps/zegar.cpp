@@ -114,8 +114,10 @@ int main()
     }
     if(bialy==0)
         //tutaj przegrywa bialy
+	    bialy=0;
     else if(czarny==0 && type!="pvp")
-        //tutaj przegrywa czarny 
+        //tutaj przegrywa czarny
+	czarny=0;
     plik.close();
     //wyczyszczenie pliku danezegar
     std::ofstream plik1("danezegar.txt", std::ios::trunc);

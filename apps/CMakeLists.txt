@@ -13,4 +13,18 @@ target_link_libraries(main PUBLIC
     exLibrary
     ${CURSES_LIBRARIES}
     )
+# ZEGAR
+add_executable(zegar zegar.cpp)
+target_compile_features(zegar PUBLIC cxx_std_14)
 
+# Set compiler warnings
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+    target_compile_options(zegar PUBLIC -Wall -Wextra -pedantic)
+elseif(MSVC)
+    target_compile_options(zegar PUBLIC /W4)
+endif()
+
+target_link_libraries(zegar PUBLIC
+    exLibrary
+    ${CURSES_LIBRARIES}
+    )

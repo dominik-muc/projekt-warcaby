@@ -207,8 +207,9 @@ void TextRenderer::open_help(){
     #endif
 
     wrefresh(help_win);
-    getch();
-    //getch();
+    
+    char c;
+    while(c=getch() != 'h');
 
     close_popup(help_win);
 }

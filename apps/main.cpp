@@ -27,6 +27,7 @@ int ascii_renderer();
 int bot_text();
 void show_help();
 void flag_set(string flag);
+string last="Bialy";
 
 int main(int argc, char** argv){
     //defaults:
@@ -137,7 +138,6 @@ int text_renderer(){
     TextRenderer renderer;
     array<int, 2> UserInput1, UserInput2;
     string player;
-    string last=="Bialy";
     string message = "";
 
     std::ofstream plikk("danezegar.txt",std::ios::app);
@@ -178,7 +178,6 @@ int ascii_renderer(){
 
     array<int, 2> UserInput1, UserInput2;
     string player;
-    string last=="Bialy";
     string message = "";
     std::ofstream pliki("danezegar.txt",std::ios::app);
     if(pliki.is_open())

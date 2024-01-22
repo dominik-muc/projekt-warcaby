@@ -3,10 +3,10 @@
 #include <fstream>
 #include <string>
 #include <thread>
+#include <Warcaby/zegar.h>
 
 
-
-void wypisz_czasy(std::string typ,int bialy,int czarny)
+void Zegar::wypisz_czasy(std::string typ,int bialy,int czarny)
 {
     std::cout << "\e[0;10H";
     if(typ=="pvp")

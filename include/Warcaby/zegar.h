@@ -4,5 +4,5 @@
 #include <string>
 #include <thread>
 
-int wypisz_czasy(std::string typ,int bialy,int czarny);
+void wypisz_czasy(std::string typ,int bialy,int czarny);
 

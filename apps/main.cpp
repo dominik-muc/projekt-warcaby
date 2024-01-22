@@ -57,7 +57,7 @@ int main(int argc, char** argv){
                 break;
             case str2int("--time"):
                 {
-                std::ofstream plik("danezegar.txt",std::ios::out);
+                std::ofstream plik("danezegar.txt");
                 if(plik.is_open())
                 	plik << "time" << " " << argv[i+1] << std::endl;
                 plik.close();
@@ -72,7 +72,7 @@ int main(int argc, char** argv){
                 break;
             case str2int("--pve"):
             {
-                std::ofstream plik1("danezegar.txt",std::ios::out);
+                std::ofstream plik1("danezegar.txt");
                 if(plik1.is_open())
                 	plik1 << "pve" << std::endl;
                 plik1.close();
@@ -139,7 +139,7 @@ int text_renderer(){
     string player;
     string message = "";
 
-    std::ofstream plikk("danezegar.txt",std::ios::out);
+    std::ofstream plikk("danezegar.txt");
     if(plikk.is_open())
         plikk << "start" << std::endl;
     plikk.close();

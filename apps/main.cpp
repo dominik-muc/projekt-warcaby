@@ -73,9 +73,9 @@ int main(int argc, char** argv){
             case str2int("--pve"):
             {
                 std::ofstream plik1("danezegar.txt",std::ios::out);
-                if(plik.is_open())
-                	plik << "pve" << std::endl;
-                plik.close();
+                if(plik1.is_open())
+                	plik1 << "pve" << std::endl;
+                plik1.close();
                 if(set[1]){
                     flag_set(argv[i]);
                     return -1;
@@ -87,9 +87,9 @@ int main(int argc, char** argv){
             case str2int("--pvp"):
             {
                 std::ofstream plik2("danezegar.txt",std::ios::out);
-                if(plik.is_open())
-                	plik << "pvp" << std::endl;
-                plik.close();
+                if(plik2.is_open())
+                	plik2 << "pvp" << std::endl;
+                plik2.close();
                 if(set[1]){
                     flag_set(argv[i]);
                     return -1;

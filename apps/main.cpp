@@ -136,7 +136,7 @@ int text_renderer(){
     Game game;
     TextRenderer renderer;
     array<int, 2> UserInput1, UserInput2;
-    string player;
+    string player,last=="Bialy";
     string message = "";
 
     std::ofstream plikk("danezegar.txt",std::ios::app);
@@ -159,9 +159,10 @@ int text_renderer(){
         message = game.update(UserInput1[0], UserInput1[1], UserInput2[0], UserInput2[1], player);
         renderer.reset_selection();
         std::ofstream pli("danezegar.txt",std::ios::app);
-        if(pli.is_open())
+        if(last!=player && pli.is_open())
             pli << 1 << std::endl;
         pli.close();
+        last=player;
     }
 
     renderer.open_win_screen(game.gameState);
@@ -175,7 +176,7 @@ int ascii_renderer(){
     AsciiRenderer renderer;
 
     array<int, 2> UserInput1, UserInput2;
-    string player;
+    string player,last=="Bialy";
     string message = "";
     std::ofstream pliki("danezegar.txt",std::ios::app);
     if(pliki.is_open())
@@ -185,6 +186,7 @@ int ascii_renderer(){
     while(game.gameState == ONGOING){
         renderer.printBoard(game.getBoard());
         player = game.currentMove == SYMBOL_WHITE ? "Bialy" : "Czarny";
+        
         renderer.printMessage(message + "\n\nRuch gracza: " + player + "\nPodaj ruch");
 
         UserInput1 = renderer.getUserInput();
@@ -192,9 +194,11 @@ int ascii_renderer(){
 
         message = game.update(UserInput1[0], UserInput1[1], UserInput2[0], UserInput2[1], player);
         std::ofstream pli("danezegar.txt",std::ios::app);
-        if(pli.is_open())
+        
+        if(last!=player && pli.is_open())
             pli << 1 << std::endl;
         pli.close();
+        last=player;
     }
 
     renderer.closeRenderer();

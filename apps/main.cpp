@@ -5,7 +5,7 @@
 #include <Warcaby/Renderer/text_renderer.hpp>
 #include <Warcaby/Renderer/ascii_renderer.hpp>
 #include <Warcaby/Bot/bot.h>
-
+#include <Warcaby/zegar.h>
 using namespace std;
 
 enum RendererType{
@@ -53,6 +53,14 @@ int main(int argc, char** argv){
                 }
                 set[0] = 1;
                 rtype = TEXT;
+                break;
+            case str2int("--type"):
+                zegar.do_pliku("type",argv[i+1];
+                i++;
+                break;
+            case str2int("--time"):
+                zegar.do_pliku("time",argv[i+1];
+                i++;
                 break;
             case str2int("--help"):
             case str2int("-h"):

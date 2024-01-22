@@ -55,10 +55,10 @@ int main(int argc, char** argv){
                 rtype = TEXT;
                 break;
             case str2int("--type"):
-                std::ofstream plik("danezegar.txt");
-                if(plik.is_open())
-                	plik << "type" << " " << argv[i+1] << std::endl;
-                plik.close();
+                std::ofstream plik1("danezegar.txt");
+                if(plik1.is_open())
+                	plik1 << "type" << " " << argv[i+1] << std::endl;
+                plik1.close();
                 i++;
                 break;
             case str2int("--time"):

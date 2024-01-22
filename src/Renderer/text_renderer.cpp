@@ -1,9 +1,20 @@
 #include "Warcaby/Renderer/text_renderer.hpp"
 
 
+#ifdef PDCURSES
+    #include <windows.h>
+#endif
+
+
+
 TextRenderer::TextRenderer()
 {
     initscr();
+    #ifdef PDCURSES
+        HWND consoleWindow = GetConsoleWindow();
+        SetWindowLong(consoleWindow, GWL_STYLE, GetWindowLong(consoleWindow, GWL_STYLE) & ~WS_MAXIMIZEBOX & ~WS_SIZEBOX);
+        resize_term(34, 105);
+    #endif
     cbreak();
     noecho();
     keypad(stdscr, TRUE);

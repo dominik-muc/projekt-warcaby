@@ -5,6 +5,8 @@ AsciiRenderer::AsciiRenderer()
 {
     initscr();
     keypad(stdscr, TRUE);
+    cbreak();
+    noecho();
     //printw("Hello World !!!\n");    
     refresh();
 }
